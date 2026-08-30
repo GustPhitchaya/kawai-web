@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.DS_Store
+deno.lock
+.vite/
+__artifact_test.html

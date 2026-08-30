@@ -1,0 +1,33 @@
+{
+  "tasks": {
+    "dev": "deno run -A npm:vite",
+    "build": "deno run -A npm:vite build",
+    "preview": "deno run -A npm:vite preview",
+    "check": "deno run -A npm:svelte-check --tsconfig ./tsconfig.json",
+    "bundle": "BUNDLE=1 deno run -A npm:vite build && deno run -A scripts/inline.ts"
+  },
+  "nodeModulesDir": "auto",
+  "imports": {
+    "svelte": "npm:svelte@^5.20.0",
+    "svelte/": "npm:/svelte@^5.20.0/",
+    "three": "npm:three@^0.172.0",
+    "vite": "npm:vite@^6.0.7",
+    "@sveltejs/vite-plugin-svelte": "npm:@sveltejs/vite-plugin-svelte@^5.0.3"
+  },
+  "compilerOptions": {
+    "lib": [
+      "deno.window",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "svelte"
+    ]
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true,
+    "lineWidth": 100
+  }
+}
