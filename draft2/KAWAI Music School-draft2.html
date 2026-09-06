@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KAWAI Music School Thailand | โรงเรียนสอนดนตรีคาไว</title>
+<meta name="description" content="โรงเรียนสอนดนตรีคาไว Personality & Harmony ก่อตั้งที่ญี่ปุ่นปี 1956 คอร์สสำหรับเด็ก 1 ขวบถึงผู้ใหญ่ ครูบรรเลงเปียโนสดทุกคาบ 12 สาขาทั่วไทย จองคลาสเรียนทดลองได้ทางไลน์">
+<meta name="theme-color" content="#DB2A1B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23DB2A1B'/%3E%3Ccircle cx='16' cy='20' r='7' fill='none' stroke='white' stroke-width='2.4'/%3E%3Ccircle cx='11' cy='9' r='3.6' fill='none' stroke='white' stroke-width='2.2'/%3E%3Ccircle cx='21' cy='9' r='3.6' fill='none' stroke='white' stroke-width='2.2'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- DEPLOY STEP: patch og:url and og:image with the live absolute URL before zipping -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="KAWAI Music School Thailand">
+<meta property="og:description" content="ไม่ใช่แค่การเรียนดนตรี แต่เป็นการเรียนรู้ผ่านเสียงดนตรี">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&family=Prompt:wght@500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ============ tokens ============ */
+:root{
+  --canvas:#FAF7F3;
+  --panel:#FFFFFF;
+  --deep:#0F1015;
+  --accent:#DB2A1B;
+  --accent-hover:#B92214;
+  --accent-muted:rgba(219,42,27,.16);
+  --accent-light:#F2705E;   /* the accent lifted for the dark sections */
+  --accent-ink:#B92214;     /* the accent deepened for small text on paper */
+  --line:rgba(22,23,28,.12);
+  --line-strong:rgba(22,23,28,.28);
+  --line-btn:rgba(22,23,28,.55);
+  --text-primary:#16171C;
+  --text-secondary:#5F5C58;
+  --display:'Prompt',system-ui,sans-serif;
+  --body:'Noto Sans Thai',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Noto Sans Thai',monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-soft:cubic-bezier(.4,0,.2,1);
+  --shadow:0 1px 2px rgba(22,23,28,.05),0 12px 40px rgba(22,23,28,.07);
+  --pad:clamp(20px,5vw,72px);
+}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden;overflow-x:clip}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--canvas);color:var(--text-primary);
+  font-family:var(--body);font-size:clamp(15px,1.02vw,17px);line-height:1.75;
+  font-weight:400;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;line-height:1.24;margin:0;letter-spacing:-.005em}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--accent);color:#fff;padding:12px 20px;border-radius:0 0 10px 0;font-weight:500}
+.skip:focus{left:0}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.ico{width:1em;height:1em;display:block;flex:0 0 auto;fill:currentColor}
+.ico .stroked,.stroked{fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+
+/* ============ the fixed environment layer (signature: the staff) ============ */
+.env{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.env .glow{position:absolute;inset:-20%;background:
+  radial-gradient(58% 44% at 76% 12%,rgba(219,42,27,.055),transparent 70%),
+  radial-gradient(52% 40% at 12% 82%,rgba(219,42,27,.035),transparent 72%);
+  animation:envdrift 96s var(--ease-soft) -22s infinite alternate}
+.env .rules{position:absolute;left:0;right:0;top:50%;height:0;opacity:.5;
+  animation:staffdrift 90s var(--ease-soft) -30s infinite alternate}
+.env .rules i{position:absolute;left:0;right:0;height:1px;background:rgba(22,23,28,.055)}
+.env .rules i:nth-child(1){top:-84px}
+.env .rules i:nth-child(2){top:-42px}
+.env .rules i:nth-child(3){top:0}
+.env .rules i:nth-child(4){top:42px}
+.env .rules i:nth-child(5){top:84px}
+@keyframes envdrift{from{transform:translate3d(-2%,-1.5%,0) scale(1.02)}to{transform:translate3d(2.5%,2%,0) scale(1.08)}}
+@keyframes staffdrift{from{transform:translate3d(0,-6vh,0)}to{transform:translate3d(0,7vh,0)}}
+.page{position:relative;z-index:1}
+
+/* ============ header ============ */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:50;padding:14px var(--pad);
+  display:flex;align-items:center;gap:18px;
+  transition:background .5s var(--ease),box-shadow .5s var(--ease),padding .5s var(--ease)}
+.hdr.solid{background:rgba(250,247,243,.9);backdrop-filter:blur(14px) saturate(1.2);
+  box-shadow:0 1px 0 var(--line);padding-top:10px;padding-bottom:10px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;flex:0 0 auto}
+.brand img{width:clamp(132px,13vw,178px);height:auto}
+.nav{display:flex;gap:clamp(10px,1.5vw,24px);margin-left:auto;align-items:center}
+.nav a{text-decoration:none;font-size:.86rem;font-weight:500;color:var(--text-primary);
+  padding:6px 2px;position:relative;transition:color .35s var(--ease);white-space:nowrap}
+.nav a::after{content:"";position:absolute;left:0;right:100%;bottom:2px;height:1.5px;
+  background:var(--accent);transition:right .45s var(--ease)}
+.nav a:hover{color:var(--accent)}
+.nav a:hover::after{right:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--body);font-weight:500;font-size:.92rem;text-decoration:none;
+  padding:13px 24px;border-radius:999px;border:1.5px solid transparent;cursor:pointer;
+  transition:transform .4s var(--ease),background .4s var(--ease),color .4s var(--ease),
+             border-color .4s var(--ease),box-shadow .4s var(--ease)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 6px 22px rgba(219,42,27,.24)}
+.btn-primary:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 10px 30px rgba(219,42,27,.3)}
+.btn-ghost{border-color:var(--line-btn);color:var(--text-primary);background:transparent}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.btn-sm{padding:10px 18px;font-size:.85rem}
+.hdr .btn{flex:0 0 auto}
+.menu-btn{display:none;margin-left:auto;background:transparent;border:1.5px solid var(--line-btn);
+  border-radius:999px;padding:9px 15px;font-family:var(--body);font-size:.85rem;cursor:pointer;color:inherit}
+
+/* ============ hero ============ */
+.hero{position:relative;height:520vh;padding:0}
+.stage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--panel)}
+.shot{position:absolute;inset:0;will-change:transform;transform:translateZ(0)}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:72% 46%}
+.veil{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(101deg,rgba(250,247,243,.97) 0%,rgba(250,247,243,.94) 30%,
+  rgba(250,247,243,.66) 48%,rgba(250,247,243,.12) 66%,rgba(250,247,243,0) 78%)}
+.veil-top{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(180deg,rgba(250,247,243,.8) 0%,rgba(250,247,243,0) 22%,
+  rgba(250,247,243,0) 78%,rgba(250,247,243,.5) 100%)}
+.bands{position:absolute;inset:0}
+.band{position:absolute;left:var(--pad);top:50%;transform:translateY(-50%);
+  width:min(520px,44vw);opacity:0;pointer-events:none}
+.band.live{pointer-events:auto}
+.band::before{content:"";position:absolute;inset:-14% -22% -14% -40%;pointer-events:none;z-index:-1;
+  opacity:calc(.3 + .7*var(--k,1));
+  background:radial-gradient(ellipse 78% 66% at 42% 50%,rgba(252,250,247,.92) 0%,
+  rgba(252,250,247,.66) 46%,rgba(252,250,247,0) 78%)}
+.kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--accent-ink);font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.kicker::after{content:"";flex:1;height:1px;background:var(--accent-muted);max-width:80px}
+.band h1{font-size:clamp(1.9rem,4.15vw,3.55rem)}
+.band .lead{font-size:clamp(1.35rem,2.9vw,2.5rem);font-family:var(--display);font-weight:600;line-height:1.3}
+.band .sub{margin-top:18px;font-size:clamp(.95rem,1.15vw,1.08rem);color:var(--text-secondary);max-width:34ch}
+.band .badge{margin-top:26px;display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:.73rem;letter-spacing:.1em;color:var(--text-secondary);
+  border:1px solid var(--line);background:rgba(255,255,255,.62);backdrop-filter:blur(8px);
+  padding:8px 15px;border-radius:999px}
+.band .badge b{color:var(--accent-ink);font-weight:700}
+.band .cta{margin-top:30px;display:flex;flex-wrap:wrap;gap:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* split-text primitives */
+.w{display:inline-block;white-space:pre}
+.c{display:inline-block;will-change:transform,opacity}
+/* (a) word-by-word rise */
+.rise .w{--kc:clamp(0,(var(--k,0) - var(--th,0))*2.9,1);opacity:var(--kc);
+  transform:translateY(calc((1 - var(--kc))*22px))}
+/* (g) approach from depth */
+.approach{transform:scale(calc(.88 + .12*var(--k,0)));transform-origin:0 50%;
+  opacity:clamp(0,var(--k,0)*1.5,1)}
+/* (c) blur to sharp */
+.b2s{position:relative}
+.b2s .soft{position:absolute;inset:0;filter:blur(11px);opacity:calc(1 - var(--k,0))}
+.b2s .sharp{opacity:var(--k,0)}
+/* staged settle */
+.stage-2{opacity:clamp(0,(var(--k,0) - .42)*3.4,1);
+  transform:translateY(calc((1 - clamp(0,(var(--k,0) - .42)*3.4,1))*14px))}
+.stage-3{opacity:clamp(0,(var(--k,0) - .62)*3.6,1);
+  transform:translateY(calc((1 - clamp(0,(var(--k,0) - .62)*3.6,1))*14px))}
+
+.scrollcue{position:absolute;left:var(--pad);bottom:34px;display:flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.18em;color:var(--text-secondary);
+  opacity:calc(1 - var(--p,0)*4)}
+.scrollcue span{display:block;width:34px;height:1px;background:var(--line-strong);position:relative;overflow:hidden}
+.scrollcue span::after{content:"";position:absolute;inset:0;background:var(--accent);
+  animation:cue 2.6s var(--ease-soft) -.6s infinite}
+@keyframes cue{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+
+/* static hero (phones, reduced motion) */
+.static-hero{display:none;padding:clamp(104px,16vh,150px) var(--pad) 56px}
+.static-hero .shotwrap{margin-top:30px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:var(--panel)}
+.static-hero .shotwrap img{width:100%;height:auto}
+.static-hero h1{font-size:clamp(1.85rem,7.4vw,2.6rem)}
+.static-hero .sub{margin-top:16px;color:var(--text-secondary)}
+.static-hero .cta{margin-top:26px;display:flex;flex-wrap:wrap;gap:12px}
+.static-hero .badge{margin-top:22px;display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--text-secondary);
+  border:1px solid var(--line);padding:8px 15px;border-radius:999px}
+.static-hero .badge b{color:var(--accent-ink);font-weight:700}
+
+/* ============ sections ============ */
+section{padding:clamp(76px,10vw,140px) var(--pad);position:relative}
+.wrap{max-width:1220px;margin:0 auto}
+.head{max-width:min(820px,92%);margin-bottom:clamp(38px,5vw,64px)}
+.head h2{font-size:clamp(1.6rem,3.35vw,2.85rem);margin-bottom:18px}
+.head p{color:var(--text-secondary);font-size:clamp(.98rem,1.15vw,1.1rem);max-width:62ch}
+.staff{width:100%;height:26px;overflow:visible;margin-bottom:26px}
+.staff line{stroke:var(--line);stroke-width:1;stroke-dasharray:1400;stroke-dashoffset:1400;
+  transition:stroke-dashoffset 1.5s var(--ease)}
+.staff .note{fill:var(--accent);opacity:0;transform:translateX(-16px);
+  transition:opacity .7s var(--ease) .55s,transform .9s var(--ease) .55s}
+[data-reveal].in .staff line{stroke-dashoffset:0}
+[data-reveal].in .staff line:nth-child(2){transition-delay:.07s}
+[data-reveal].in .staff line:nth-child(3){transition-delay:.14s}
+[data-reveal].in .staff line:nth-child(4){transition-delay:.21s}
+[data-reveal].in .staff line:nth-child(5){transition-delay:.28s}
+[data-reveal].in .staff .note{opacity:1;transform:translateX(0)}
+
+/* reveal choreography */
+[data-reveal] .part{opacity:0;transform:translateY(26px);
+  transition:opacity .9s var(--ease),transform .9s var(--ease)}
+[data-reveal].in .part{opacity:1;transform:none}
+[data-reveal].in .part:nth-child(2){transition-delay:.08s}
+[data-reveal].in .part:nth-child(3){transition-delay:.16s}
+[data-reveal].in .part:nth-child(4){transition-delay:.24s}
+[data-reveal].in .part:nth-child(5){transition-delay:.32s}
+[data-reveal].in.done .part,[data-reveal].in.done .part:nth-child(2),
+[data-reveal].in.done .part:nth-child(3),[data-reveal].in.done .part:nth-child(4),
+[data-reveal].in.done .part:nth-child(5){transition-delay:0s}
+
+/* philosophy */
+.philo{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(30px,4.5vw,72px);align-items:stretch}
+.philo .body p+p{margin-top:20px}
+.philo .body p{color:var(--text-secondary);font-size:clamp(1rem,1.1vw,1.08rem)}
+.pillword{font-family:var(--display);font-weight:700;color:var(--text-primary);font-size:clamp(1.25rem,2.2vw,1.9rem);line-height:1.4;margin-top:34px;max-width:30ch}
+.pillword em{font-style:normal;color:var(--accent)}
+.ppic{border-radius:20px;overflow:hidden;background:#EDE7E0;box-shadow:var(--shadow);min-height:330px}
+.ppic img{width:100%;height:100%;object-fit:cover;object-position:58% 50%;display:block;
+  transition:transform 1.3s var(--ease)}
+.ppic:hover img{transform:scale(1.045)}
+.hilite{position:relative;margin-top:clamp(30px,3.8vw,54px);background:var(--panel);border-radius:20px;
+  padding:clamp(26px,3.2vw,46px);box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden;
+  display:grid;grid-template-columns:minmax(0,1fr) clamp(180px,23vw,310px);
+  gap:clamp(22px,4vw,60px);align-items:center}
+.hilite .tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent-ink);margin-bottom:14px}
+.hilite h3{font-size:clamp(1.2rem,2vw,1.68rem);line-height:1.38;max-width:27ch}
+.hilite .keys{display:flex;height:72px;align-items:flex-start;justify-content:flex-end}
+.hilite .keys i{flex:1;background:linear-gradient(180deg,#fff,#F0EBE5);border:1px solid var(--line);
+  border-radius:0 0 4px 4px;height:100%;margin-left:-1px}
+.hilite .keys i.blk{flex:0 0 auto;width:11px;height:62%;position:relative;z-index:2;
+  background:linear-gradient(180deg,#2A2B33,#141519);border-color:transparent;
+  border-radius:0 0 3px 3px;margin:0 -6px}
+.hilite::after{content:"";position:absolute;right:-70px;top:-70px;width:190px;height:190px;border-radius:50%;
+  background:radial-gradient(circle,rgba(219,42,27,.13),transparent 66%);
+  animation:breathe 9s var(--ease-soft) -3s infinite alternate}
+@keyframes breathe{from{transform:scale(.9);opacity:.6}to{transform:scale(1.12);opacity:1}}
+.dots{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.dots i{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.16;
+  animation:float 17s var(--ease-soft) infinite alternate}
+.dots i:nth-child(1){left:8%;top:26%;animation-delay:-2s}
+.dots i:nth-child(2){left:24%;top:68%;animation-delay:-6s;width:4px;height:4px}
+.dots i:nth-child(3){left:47%;top:16%;animation-delay:-10s}
+.dots i:nth-child(4){left:63%;top:74%;animation-delay:-4s;width:3px;height:3px}
+.dots i:nth-child(5){left:82%;top:38%;animation-delay:-13s}
+.dots i:nth-child(6){left:93%;top:62%;animation-delay:-8s;width:4px;height:4px}
+@keyframes float{from{transform:translate3d(0,10px,0)}to{transform:translate3d(14px,-18px,0)}}
+
+/* strengths: offset stack, deliberately not a card grid */
+.strengths{border-top:1px solid var(--line)}
+.srow{display:grid;grid-template-columns:1.04fr .96fr;gap:clamp(26px,4.4vw,72px);
+  padding:clamp(30px,4vw,58px) 0;border-bottom:1px solid var(--line);align-items:center}
+.srow:last-of-type{border-bottom:0;padding-bottom:0}
+.spic{border-radius:22px;overflow:hidden;background:#EDE7E0;box-shadow:var(--shadow)}
+.spic img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;display:block;
+  transition:transform 1.3s var(--ease)}
+.srow:hover .spic img{transform:scale(1.045)}
+.srow.flip .spic{order:2}
+.srow .num{font-family:var(--mono);font-size:clamp(1.5rem,2.8vw,2.3rem);color:var(--accent);
+  opacity:.3;line-height:1;font-weight:500;margin-bottom:14px;
+  transition:opacity .5s var(--ease)}
+.srow:hover .num{opacity:.62}
+.srow h3{font-size:clamp(1.2rem,2.05vw,1.72rem);margin-bottom:14px}
+.srow p{color:var(--text-secondary);max-width:46ch}
+
+/* courses */
+.courses{background:var(--panel)}
+.clist{display:grid;gap:clamp(14px,1.6vw,20px)}
+.course{display:grid;grid-template-columns:264px 1fr auto;gap:clamp(18px,2.6vw,38px);
+  align-items:center;background:var(--canvas);border:1px solid var(--line);border-radius:20px;
+  padding:16px;transition:transform .55s var(--ease),box-shadow .55s var(--ease),border-color .55s var(--ease)}
+.course:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--accent-muted)}
+.course .pic{width:264px;height:185px;border-radius:14px;overflow:hidden;background:#e9e4de;flex:0 0 auto}
+.course .pic img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease)}
+.course:hover .pic img{transform:scale(1.05)}
+.course .meta{min-width:0}
+.course .age{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--accent-ink);
+  text-transform:uppercase;margin-bottom:8px}
+.course h3{font-size:clamp(1.12rem,1.65vw,1.42rem);margin-bottom:4px}
+.course .th{font-size:.9rem;color:var(--text-secondary);margin-bottom:10px}
+.course p{color:var(--text-secondary);font-size:.96rem;max-width:56ch}
+.course .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.course .facts span{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;
+  border:1px solid var(--line);border-radius:999px;padding:5px 11px;color:var(--text-secondary)}
+.course .go{padding-right:14px}
+.inst{margin-top:clamp(26px,3vw,42px);border:1px dashed var(--line-strong);border-radius:20px;
+  padding:clamp(22px,2.8vw,34px);display:grid;grid-template-columns:1fr auto;gap:22px;align-items:center}
+.inst h3{font-size:1.15rem;margin-bottom:8px}
+.inst p{color:var(--text-secondary);font-size:.96rem;max-width:62ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips b{font-weight:700;font-size:.85rem;background:var(--accent-muted);color:var(--accent-hover);
+  padding:6px 14px;border-radius:999px}
+
+/* the interactive moment */
+.harmony{background:var(--deep);color:#F3F0EC;overflow:hidden}
+.harmony .kicker,.contact .kicker,.lineblock .tag{color:var(--accent-light)}
+.harmony .kicker::after,.contact .kicker::after{background:rgba(242,112,94,.34)}
+.harmony .head h2{color:#fff}
+.harmony .head p{color:rgba(243,240,236,.68)}
+.harmony .staff line{stroke:rgba(255,255,255,.16)}
+.hbox{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,80px);align-items:center}
+.hkeys{display:flex;gap:10px;height:clamp(150px,20vw,230px);align-items:flex-end}
+.hkeys .k{flex:1;border-radius:8px 8px 12px 12px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.13);position:relative;overflow:hidden;
+  transition:transform .55s var(--ease),border-color .55s var(--ease)}
+.hkeys .k::after{content:"";position:absolute;inset:0;opacity:0;
+  background:linear-gradient(180deg,rgba(219,42,27,.16),rgba(219,42,27,.72));
+  transition:opacity .5s var(--ease)}
+.hkeys .k .cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;z-index:2;
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:rgba(255,255,255,.72);
+  transition:color .5s var(--ease)}
+.hkeys .k.on{transform:translateY(-14px);border-color:rgba(219,42,27,.6)}
+.hkeys .k.on::after{opacity:1}
+.hkeys .k.on .cap{color:#fff}
+.hkeys .k:nth-child(1){height:56%}
+.hkeys .k:nth-child(2){height:70%}
+.hkeys .k:nth-child(3){height:100%}
+.hkeys .k:nth-child(4){height:78%}
+.hkeys .k:nth-child(5){height:62%}
+.holder{margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.hold-btn{position:relative;border:1.5px solid rgba(255,255,255,.42);background:transparent;color:#fff;
+  font-family:var(--body);font-weight:500;font-size:.95rem;padding:15px 30px;border-radius:999px;
+  cursor:pointer;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;
+  transition:border-color .5s var(--ease)}
+.hold-btn span{position:relative;z-index:2}
+.hold-btn::before{content:"";position:absolute;left:0;top:0;bottom:0;width:100%;background:var(--accent);
+  transform:scaleX(var(--h,0));transform-origin:0 50%}
+.hold-btn:hover{border-color:var(--accent-light)}
+.hprog{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;color:rgba(243,240,236,.68)}
+.hslot{display:grid}
+.hslot>*{grid-area:1/1;align-self:center}
+.payoff-idle{transition:opacity .7s var(--ease)}
+.payoff-idle.off{opacity:0;pointer-events:none}
+.payoff-idle .idle-big{font-family:var(--display);font-weight:600;color:rgba(243,240,236,.55);
+  font-size:clamp(1.3rem,2.4vw,1.9rem);line-height:1.3}
+.payoff-idle p{color:rgba(243,240,236,.5);margin-top:12px;max-width:40ch}
+.payoff{opacity:0;transform:translateY(16px);
+  transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.payoff.on{opacity:1;transform:none}
+.payoff .big{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,3.6vw,2.9rem);
+  color:#fff;line-height:1.2}
+.payoff .big em{font-style:normal;color:var(--accent-light)}
+.payoff p{color:rgba(243,240,236,.72);margin-top:12px;max-width:44ch}
+
+/* exam + events */
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px)}
+.level{background:var(--panel);border:1px solid var(--line);border-radius:18px;
+  padding:clamp(24px,2.8vw,34px);transition:transform .55s var(--ease),box-shadow .55s var(--ease)}
+.level:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+@media (min-width:981px){.levels{align-items:start}
+  .level:nth-child(1){margin-top:56px}.level:nth-child(2){margin-top:28px}}
+.level .lv{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;color:var(--accent-ink);margin-bottom:14px}
+.level h3{font-size:1.2rem;margin-bottom:10px}
+.level p{color:var(--text-secondary);font-size:.95rem}
+.note-line{margin-top:clamp(22px,2.6vw,34px);display:flex;gap:12px;align-items:center;
+  font-size:.95rem;color:var(--text-secondary);border-left:2px solid var(--accent);padding-left:16px}
+
+.events{background:var(--panel)}
+.elist{display:grid;gap:0}
+.event{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,520px);gap:clamp(22px,4vw,60px);
+  padding:clamp(26px,3.4vw,46px) 0;border-top:1px solid var(--line);align-items:center}
+.event:last-child{border-bottom:1px solid var(--line)}
+.event .when{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--accent-ink);
+  white-space:nowrap;margin-bottom:10px;display:block}
+.event h3{font-size:clamp(1.12rem,1.75vw,1.5rem);margin-bottom:10px}
+.event p{color:var(--text-secondary);font-size:.96rem;max-width:52ch}
+.epic{border-radius:18px;overflow:hidden;background:#EDE7E0}
+.epic img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block;
+  transition:transform 1.3s var(--ease)}
+.event:hover .epic img{transform:scale(1.045)}
+
+/* reviews */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px)}
+.quote{background:var(--panel);border:1px solid var(--line);border-radius:18px;
+  padding:clamp(24px,2.8vw,36px);position:relative;
+  transition:transform .55s var(--ease),box-shadow .55s var(--ease)}
+.quote:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.quote .mark{font-family:var(--display);font-size:3.4rem;line-height:.6;color:var(--accent);opacity:.2;
+  display:block;margin-bottom:12px}
+.quote p{font-size:1.02rem;line-height:1.7}
+.quote .who{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.quote .who b{display:block;font-weight:500;font-family:var(--display)}
+.quote .who span{font-size:.83rem;color:var(--text-secondary)}
+
+/* branches */
+.branches{background:var(--panel)}
+.bgroup+.bgroup{margin-top:clamp(32px,4vw,52px)}
+.bgroup h3{font-family:var(--mono);font-weight:500;font-size:.76rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--accent-ink);margin-bottom:20px;display:flex;align-items:center;gap:14px}
+.bgroup h3::after{content:"";flex:1;height:1px;background:var(--line)}
+.blist.one{grid-template-columns:1fr}
+.blist.two{grid-template-columns:repeat(2,1fr)}
+.blist{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);
+  border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.branch{background:var(--panel);padding:clamp(18px,2vw,26px);transition:background .45s var(--ease);
+  display:flex;gap:13px;align-items:flex-start}
+.branch .ico{font-size:1.15rem;color:var(--accent);opacity:.5;margin-top:2px;
+  transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.branch:hover .ico{opacity:1;transform:translateY(-2px)}
+.branch:hover{background:var(--canvas)}
+.branch b{display:block;font-family:var(--display);font-weight:600;font-size:1.02rem;margin-bottom:5px}
+.branch span{font-size:.88rem;color:var(--text-secondary)}
+
+/* contact */
+.contact{background:var(--deep);color:#F3F0EC}
+.contact .head h2{color:#fff;font-size:clamp(1.75rem,4vw,3.1rem)}
+.contact .head p{color:rgba(243,240,236,.68)}
+.contact .staff line{stroke:rgba(255,255,255,.16)}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);align-items:start}
+.lineblock{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:clamp(26px,3vw,38px)}
+.lineblock .tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent-ink);margin-bottom:14px}
+.lineblock h3{color:#fff;font-size:clamp(1.2rem,1.9vw,1.55rem);margin-bottom:10px}
+.lineblock p{color:rgba(243,240,236,.7);font-size:.96rem;margin-bottom:22px}
+.ways{margin-top:26px;display:grid;gap:2px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden}
+.way{background:#14151B;padding:16px 20px;display:flex;gap:13px;align-items:center;
+  text-decoration:none;transition:background .4s var(--ease)}
+.way:hover{background:#1C1D25}
+.way .ico{font-size:1.16rem;color:var(--accent-light);opacity:.9;
+  transition:transform .4s var(--ease)}
+.way:hover .ico{transform:translateX(2px)}
+.way .lbl{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(243,240,236,.66);width:100px;flex:0 0 auto}
+.way .val{color:#F3F0EC;font-size:.96rem;word-break:break-all}
+.waystitle{color:#fff;font-size:clamp(1.1rem,1.7vw,1.35rem);margin-bottom:18px}
+.waysnote{margin-top:20px;font-size:.92rem;color:rgba(243,240,236,.66);line-height:1.75;max-width:44ch}
+
+/* footer */
+footer{background:var(--deep);color:rgba(243,240,236,.6);padding:0 var(--pad) 44px;
+  border-top:1px solid rgba(255,255,255,.09)}
+.fgrid{max-width:1220px;margin:0 auto;padding:clamp(48px,6vw,76px) 0 34px;
+  display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:clamp(28px,4vw,60px)}
+footer img{width:186px;margin-bottom:20px;filter:brightness(0) invert(1)}
+footer p{font-size:.92rem;line-height:1.8}
+.fcol h4{font-family:var(--mono);font-weight:500;font-size:.68rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(243,240,236,.62);margin-bottom:16px}
+.fcol a{display:block;text-decoration:none;color:rgba(243,240,236,.72);font-size:.93rem;
+  padding:5px 0;transition:color .35s var(--ease)}
+.fcol a:hover{color:var(--accent-light)}
+.fbot{max-width:1220px;margin:0 auto;padding-top:26px;border-top:1px solid rgba(255,255,255,.09);
+  display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;
+  font-size:.84rem;color:rgba(243,240,236,.66)}
+.social{display:flex;gap:10px}
+.social a{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.38);
+  display:grid;place-items:center;text-decoration:none;color:rgba(243,240,236,.78);
+  font-size:1.15rem;
+  transition:border-color .4s var(--ease),color .4s var(--ease),transform .4s var(--ease)}
+.social a:hover{border-color:var(--accent-light);color:var(--accent-light);transform:translateY(-2px)}
+
+/* ============ responsive ============ */
+@media (max-width:1140px){
+  .nav{display:none}
+  .menu-btn{display:block}
+  .nav.open{display:flex;position:absolute;top:100%;right:var(--pad);left:var(--pad);
+    flex-direction:column;align-items:stretch;gap:0;background:var(--panel);
+    border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:var(--shadow)}
+  .nav.open a{padding:12px 14px;border-radius:10px;font-size:.96rem}
+  .nav.open a:hover{background:var(--canvas)}
+  .hdr .btn{margin-left:12px}
+}
+@media (max-width:980px){
+  .philo,.hbox,.cgrid{grid-template-columns:1fr}
+  .hilite{grid-template-columns:1fr;gap:26px}
+  .ppic{min-height:0}
+  .ppic img{height:auto;aspect-ratio:16/10}
+  .levels,.quotes,.blist{grid-template-columns:1fr 1fr}
+  .srow,.srow.flip{grid-template-columns:1fr}
+  .srow.flip .spic{order:0}
+  .event{grid-template-columns:1fr}
+  .epic{order:-1}
+  .course{grid-template-columns:200px 1fr}
+  .course .pic{width:200px;height:150px}
+  .course .go{grid-column:1/-1;padding:0}
+  .inst{grid-template-columns:1fr}
+  .fgrid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  .brand img{width:118px}
+  .hdr{gap:10px}
+  .hdr .btn{padding:9px 14px;font-size:.78rem;margin-left:0}
+  .menu-btn{padding:8px 12px;font-size:.8rem}
+  .static-hero .cta .btn{width:100%}
+}
+@media (max-width:720px){
+  .hero,.stage{display:none}
+  .static-hero{display:block}
+  .levels,.quotes,.blist,.blist.two{grid-template-columns:1fr}
+  .course{grid-template-columns:1fr}
+  .course .pic{width:100%;height:200px}
+  .fgrid{grid-template-columns:1fr}
+  .hkeys{height:150px}
+}
+@media (orientation:portrait) and (max-width:1024px){.hero,.stage{display:none}.static-hero{display:block}}
+@media (orientation:portrait) and (pointer:coarse){.hero,.stage{display:none}.static-hero{display:block}}
+@media (orientation:landscape) and (pointer:coarse) and (max-height:560px){
+  .hero,.stage{display:none}.static-hero{display:block}}
+@media (max-height:560px){.scrollcue{display:none}}
+@media (pointer:coarse){
+  .btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero,.stage{display:none}
+  .static-hero{display:block}
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important;transition-delay:0s!important}
+  [data-reveal] .part{opacity:1!important;transform:none!important}
+  .staff line{stroke-dashoffset:0!important}
+  .staff .note{opacity:1!important;transform:none!important}
+  .payoff{opacity:1!important;transform:none!important}
+  .payoff-idle{opacity:0!important}
+}
+body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused!important}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
+
+<svg class="sprite" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-line" viewBox="0 0 24 24" class="stroked">
+    <path d="M12 4.2c-4.5 0-8.1 2.9-8.1 6.4 0 3.1 2.7 5.7 6.5 6.3l-.5 2.9c-.1.4.3.7.6.5l4.3-2.6c3.2-1 5.3-3.4 5.3-6.1 0-3.5-3.6-6.4-8.1-6.4z"/>
+    <path d="M9 10.4v3.2M12 10.4v3.2M15 10.4v3.2"/>
+  </symbol>
+  <symbol id="i-fb" viewBox="0 0 24 24">
+    <path d="M13.4 21v-8h2.6l.4-3h-3V8.1c0-.9.2-1.5 1.5-1.5h1.6V3.9c-.3 0-1.2-.1-2.3-.1-2.4 0-4 1.4-4 4.1V10H7.6v3h2.6v8h3.2z"/>
+  </symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24" class="stroked">
+    <rect x="3.6" y="3.6" width="16.8" height="16.8" rx="5"/>
+    <circle cx="12" cy="12" r="3.7"/>
+    <circle cx="17.1" cy="6.9" r="1.05" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" class="stroked">
+    <path d="M6.7 3.4h2.2l1.5 3.8-1.9 1.2a12 12 0 0 0 5.1 5.1l1.2-1.9 3.8 1.5v2.2a2.5 2.5 0 0 1-2.7 2.5A15.1 15.1 0 0 1 4.2 6.1a2.5 2.5 0 0 1 2.5-2.7z"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" class="stroked">
+    <rect x="3.4" y="5.6" width="17.2" height="12.8" rx="2.6"/>
+    <path d="M4.2 7.4 12 12.9l7.8-5.5"/>
+  </symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" class="stroked">
+    <path d="M12 20.6s6.3-5.9 6.3-10.2a6.3 6.3 0 1 0-12.6 0c0 4.3 6.3 10.2 6.3 10.2z"/>
+    <circle cx="12" cy="10.2" r="2.4"/>
+  </symbol>
+</defs></svg>
+
+
+<div class="env" aria-hidden="true">
+  <div class="glow"></div>
+  <div class="rules"><i></i><i></i><i></i><i></i><i></i></div>
+</div>
+
+<div class="page">
+<header class="hdr" id="hdr">
+  <a class="brand" href="#home" aria-label="KAWAI Music School หน้าแรก">
+    <img src="assets/logo.svg" alt="KAWAI Music School" width="500" height="45">
+  </a>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">เมนู</button>
+  <nav class="nav" id="nav" aria-label="เมนูหลัก">
+    <a href="#home">หน้าแรก</a>
+    <a href="#about">เกี่ยวกับเรา</a>
+    <a href="#courses">คอร์สเรียน</a>
+    <a href="#exam">การสอบ</a>
+    <a href="#events">อีเวนท์</a>
+    <a href="#reviews">รีวิว</a>
+    <a href="#branches">สาขา</a>
+    <a href="#contact">ติดต่อเรา</a>
+  </nav>
+  <a class="btn btn-primary btn-sm" href="https://page.line.me/kawaiofficial" target="_blank" rel="noopener">จองเรียนทดลอง</a>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- ============ hero: the scroll journey ============ -->
+<section class="hero" id="home" aria-label="แนะนำโรงเรียน">
+  <div class="stage" id="stage">
+    <div class="shot" id="shot">
+      <img src="assets/hero.jpg" alt="เด็กหญิงกำลังเล่นเปียโนในห้องเรียนคาไว" width="1080" height="700">
+    </div>
+    <div class="veil" aria-hidden="true"></div>
+    <div class="veil-top" aria-hidden="true"></div>
+
+    <div class="bands" id="bands">
+      <div class="band" data-band="0,0.26" data-ramp="0.032">
+        <div class="kicker">Kawai Music School</div>
+        <h1 class="rise" data-split="word">ไม่ใช่แค่การเรียนดนตรี แต่เป็นการเรียนรู้ ผ่าน เสียงดนตรี</h1>
+        <p class="sub">Personality &amp; Harmony</p>
+        <div class="badge"><b>1956</b> ก่อตั้งที่ประเทศญี่ปุ่น</div>
+      </div>
+
+      <div class="band" data-band="0.24,0.54">
+        <div class="approach">
+          <p class="lead">เด็กทุกคนมีเอกลักษณ์เฉพาะตัว</p>
+          <p class="sub">และทุกคนสร้างเสียงที่งดงามร่วมกันได้</p>
+        </div>
+      </div>
+
+      <div class="band" data-band="0.52,0.80">
+        <div class="b2s">
+          <p class="lead soft" aria-hidden="true">ทุกคาบ ครูบรรเลงเปียโนสดให้เด็กฟัง</p>
+          <p class="lead sharp">ทุกคาบ ครูบรรเลงเปียโนสดให้เด็กฟัง</p>
+        </div>
+        <p class="sub">ไม่มีซีดี ไม่มีเสียงจากลำโพง</p>
+      </div>
+
+      <div class="band live" data-band="0.78,1">
+        <p class="lead rise" data-split="word">มาลองเรียนหนึ่งคาบ ก่อนตัดสินใจ</p>
+        <p class="sub stage-2">คลาสเรียนทดลองมีทุกสาขา ทักมาทางไลน์แล้วเลือกวันที่สะดวกได้เลย</p>
+        <div class="cta stage-3">
+          <a class="btn btn-primary" href="https://page.line.me/kawaiofficial" target="_blank" rel="noopener">จองคลาสเรียนทดลองผ่าน LINE</a>
+          <a class="btn btn-ghost" href="#courses">ดูคอร์สเรียนทั้งหมด</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrollcue" id="cue" aria-hidden="true"><span></span>เลื่อนลง</div>
+  </div>
+</section>
+
+<!-- ============ static hero: phones and reduced motion ============ -->
+<section class="static-hero" aria-label="แนะนำโรงเรียน">
+  <div class="kicker">Kawai Music School</div>
+  <h1>ไม่ใช่แค่การเรียนดนตรี แต่เป็นการเรียนรู้ ผ่าน เสียงดนตรี</h1>
+  <p class="sub">Personality &amp; Harmony ตั้งแต่ปี 1956</p>
+  <div class="badge"><b>1956</b> ก่อตั้งที่ประเทศญี่ปุ่น</div>
+  <div class="cta">
+    <a class="btn btn-primary" href="https://page.line.me/kawaiofficial" target="_blank" rel="noopener">จองคลาสเรียนทดลองผ่าน LINE</a>
+    <a class="btn btn-ghost" href="#courses">ดูคอร์สเรียน</a>
+  </div>
+  <div class="shotwrap">
+    <picture>
+      <source media="(max-width:720px)" srcset="assets/hero-mobile.jpg" width="650" height="870">
+      <img src="assets/hero.jpg" alt="เด็กหญิงกำลังเล่นเปียโนในห้องเรียนคาไว" width="1080" height="700">
+    </picture>
+  </div>
+</section>
+
+<!-- ============ philosophy ============ -->
+<section id="about" data-reveal>
+  <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="wrap">
+    <svg class="staff" viewBox="0 0 1200 26" aria-hidden="true" preserveAspectRatio="none">
+      <line x1="0" y1="1" x2="1200" y2="1"/><line x1="0" y1="7" x2="1200" y2="7"/>
+      <line x1="0" y1="13" x2="1200" y2="13"/><line x1="0" y1="19" x2="1200" y2="19"/>
+      <line x1="0" y1="25" x2="1200" y2="25"/>
+      <ellipse class="note" cx="42" cy="13" rx="9" ry="6.4"/>
+    </svg>
+    <div class="head part">
+      <div class="kicker">Our Philosophy</div>
+      <h2>เราเริ่มจากบุคลิกภาพของเด็ก ไม่ใช่จากบทเพลง</h2>
+    </div>
+    <div class="philo">
+      <div class="body part">
+        <p>เราให้ความใส่ใจกับบุคลิกภาพของเด็ก ๆ ทุกคน เด็กทุกคนมีเอกลักษณ์เฉพาะตัว แต่ทุกคนสามารถร่วมกันสร้าง Harmony ที่งดงามเมื่อทุกคนได้มาร่วมสร้างเสียงเพลงด้วยกัน</p>
+        <p>เป้าหมายของเราไม่เพียงแค่ช่วยให้นักเรียนพัฒนาทักษะและฝีมือในการเล่น แต่ยังรวมถึงการบ่มเพาะความเป็นตัวตนของพวกเขา ผ่านกิจกรรมการแสดงออกของแต่ละหลักสูตร โดยมุ่งหวังให้พัฒนาบุคลิกภาพที่สมบูรณ์ยิ่งขึ้น</p>
+        <p class="pillword"><em>Personality</em> และ <em>Harmony</em> คือสองคำที่เราสอนทุกคาบ</p>
+      </div>
+      <div class="ppic part"><img src="assets/philosophy.jpg" alt="คุณแม่นั่งเล่นเปียโนไปกับลูกในห้องที่มีแสงธรรมชาติ" width="1400" height="764" loading="lazy"></div>
+    </div>
+    <div class="hilite part">
+      <div>
+        <div class="tag">สิ่งที่ทำให้เราต่าง</div>
+        <h3>ไม่ใช้ซีดีหรือสื่ออิเล็กทรอนิกส์ ครูบรรเลงเปียโนสดให้เด็กฟังทุกคาบ</h3>
+      </div>
+      <div class="keys" aria-hidden="true">
+        <i></i><i class="blk"></i><i></i><i class="blk"></i><i></i><i></i><i class="blk"></i><i></i><i class="blk"></i><i></i><i class="blk"></i><i></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ three strengths ============ -->
+<section class="strengths" data-reveal>
+  <div class="wrap">
+    <div class="head part">
+      <div class="kicker">The Kawai System</div>
+      <h2>สามจุดเด่นของระบบการศึกษาดนตรี KAWAI</h2>
+    </div>
+    <article class="srow part">
+      <div class="spic"><img src="assets/strength-1.jpg" alt="เด็กหญิงร้องเพลงกับไมโครโฟนอย่างมีความสุขในห้องเรียน" width="1400" height="764" loading="lazy"></div>
+      <div>
+        <div class="num">01</div>
+        <h3>เอกลักษณ์เฉพาะตัว</h3>
+        <p>เราบ่มเพาะบุคลิกภาพที่เป็นเอกลักษณ์เฉพาะตัวของนักเรียนแต่ละคน และส่งเสริมการแสดงออกถึงตัวตนอย่างมีความสุข ก้าวข้ามมาตรฐานแบบดั้งเดิม</p>
+      </div>
+    </article>
+    <article class="srow part flip">
+      <div class="spic"><img src="assets/strength-2.jpg" alt="ห้องเรียนดนตรีโปร่งสว่าง มีเบาะนั่งวงกลมและเครื่องดนตรีเรียงบนชั้น" width="1400" height="764" loading="lazy"></div>
+      <div>
+        <div class="num">02</div>
+        <h3>สภาพแวดล้อมที่ส่งเสริมการเรียนรู้</h3>
+        <p>เราจัดเตรียมพื้นที่ที่เอื้อต่อการบ่มเพาะ ให้นักเรียนได้แสดงออกถึงตัวตนได้อย่างอิสระ และยอมรับชื่นชมในความเป็นเอกลักษณ์ของตนเอง</p>
+      </div>
+    </article>
+    <article class="srow part">
+      <div class="spic"><img src="assets/strength-3.jpg" alt="ครูผู้สอนยิ้มขณะประคองมือเด็กบนคีย์เปียโน" width="1400" height="764" loading="lazy"></div>
+      <div>
+        <div class="num">03</div>
+        <h3>ผู้สอนผู้เชี่ยวชาญ</h3>
+        <p>ครูผู้สอนที่เชี่ยวชาญของเรามีชื่อเสียงด้านแนวทางการสอนที่เป็นนวัตกรรม</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ courses ============ -->
+<section class="courses" id="courses" data-reveal>
+  <div class="wrap">
+    <svg class="staff" viewBox="0 0 1200 26" aria-hidden="true" preserveAspectRatio="none">
+      <line x1="0" y1="1" x2="1200" y2="1"/><line x1="0" y1="7" x2="1200" y2="7"/>
+      <line x1="0" y1="13" x2="1200" y2="13"/><line x1="0" y1="19" x2="1200" y2="19"/>
+      <line x1="0" y1="25" x2="1200" y2="25"/>
+      <ellipse class="note" cx="42" cy="13" rx="9" ry="6.4"/>
+    </svg>
+    <div class="head part">
+      <div class="kicker">Courses</div>
+      <h2>ห้าเส้นทาง ตั้งแต่ขวบแรกจนถึงวัยผู้ใหญ่</h2>
+      <p>ทุกคอร์สเริ่มจากอายุและพัฒนาการของผู้เรียน ไม่ใช่จากบทเพลงที่ต้องเล่นให้จบ</p>
+    </div>
+    <div class="clist">
+
+      <article class="course part">
+        <div class="pic"><img src="assets/course-1.jpg" alt="ห้องเรียนกลุ่มเด็กเล็กกับครูและผู้ปกครอง" width="400" height="280" loading="lazy"></div>
+        <div class="meta">
+          <div class="age">อายุ 1 ปี</div>
+          <h3>Coo Chan Land</h3>
+          <div class="th">คูจังแลนด์</div>
+          <p>การฟังดนตรีและการตอบสนองต่อดนตรีช่วยพัฒนาความไวต่อเสียง เป็นรากฐานของการเรียนรู้ภาษาและจินตนาการ</p>
+          <div class="facts"><span>กลุ่ม 2 ถึง 4 คน</span><span>ครู 2 ท่าน</span><span>40 นาทีต่อคาบ</span><span>6 เดือนถึง 1 ปี</span></div>
+        </div>
+        <div class="go"><a class="btn btn-ghost btn-sm" href="#contact">สอบถาม</a></div>
+      </article>
+
+      <article class="course part">
+        <div class="pic"><img src="assets/course-2.jpg" alt="ห้องแกรนด์เปียโน เด็กเล็กและผู้ปกครองนั่งล้อมวงกับครู" width="400" height="280" loading="lazy"></div>
+        <div class="meta">
+          <div class="age">อายุ 2 ปี</div>
+          <h3>Kulu Kulu Club</h3>
+          <div class="th">คูลูคูลูคลับ</div>
+          <p>เน้นกิจกรรมยูริธมิกส์ ให้เด็กสัมผัสดนตรีด้วยร่างกายทั้งตัว ผ่านอุปกรณ์การสอนที่หลากหลาย</p>
+          <div class="facts"><span>กลุ่ม 2 ถึง 4 คน</span><span>ครู 2 ท่าน</span><span>50 นาทีต่อคาบ</span><span>6 เดือนถึง 1 ปี</span></div>
+        </div>
+        <div class="go"><a class="btn btn-ghost btn-sm" href="#contact">สอบถาม</a></div>
+      </article>
+
+      <article class="course part">
+        <div class="pic"><img src="assets/course-3.jpg" alt="เด็กหญิงเล่นเครื่องเคาะจังหวะกับครู" width="400" height="280" loading="lazy"></div>
+        <div class="meta">
+          <div class="age">อายุ 3 ปี</div>
+          <h3>Hello Music</h3>
+          <div class="th">เฮลโหลมิวสิก</div>
+          <p>นักเรียนได้คีย์บอร์ดเป็นของตัวเอง เรียนเล่นรวมวง ฝึกทักษะเอนเซมเบิล และอ่านโน้ตในรูปแบบที่สนุก</p>
+          <div class="facts"><span>เดี่ยวและกลุ่ม</span><span>ครู 1 ถึง 2 ท่าน</span><span>เดี่ยว 30 นาที</span><span>กลุ่ม 50 นาที</span></div>
+        </div>
+        <div class="go"><a class="btn btn-ghost btn-sm" href="#contact">สอบถาม</a></div>
+      </article>
+
+      <article class="course part">
+        <div class="pic"><img src="assets/course-4.jpg" alt="เด็กชายเรียนเปียโนเดี่ยวกับครู" width="400" height="280" loading="lazy"></div>
+        <div class="meta">
+          <div class="age">อายุ 4 ปี</div>
+          <h3>Sound Tree</h3>
+          <div class="th">ซาวด์ทรี</div>
+          <p>วิธีสอนที่พัฒนาจากประสบการณ์สอนกลุ่มกว่า 60 ปีของคาไว ผสานกับงานวิจัยด้านการสอนเปียโน</p>
+          <div class="facts"><span>เรียนเดี่ยว</span><span>ครู 1 ท่าน</span><span>30 นาทีต่อคาบ</span></div>
+        </div>
+        <div class="go"><a class="btn btn-ghost btn-sm" href="#contact">สอบถาม</a></div>
+      </article>
+
+      <article class="course part">
+        <div class="pic"><img src="assets/course-5.jpg" alt="ผู้ใหญ่เรียนเปียโนกับครูที่แกรนด์เปียโน KAWAI" width="400" height="280" loading="lazy"></div>
+        <div class="meta">
+          <div class="age">ผู้ใหญ่</div>
+          <h3>Sound Fans</h3>
+          <div class="th">ซาวด์แฟนส์</div>
+          <p>สำหรับผู้เริ่มต้น เรียนเพลงที่ชอบตามระดับและเป้าหมายของตัวเอง ผ่านการร้อง เล่น ฟัง และจดจำ</p>
+          <div class="facts"><span>เรียนเดี่ยว</span><span>เลือกเพลงเองได้</span></div>
+        </div>
+        <div class="go"><a class="btn btn-ghost btn-sm" href="#contact">สอบถาม</a></div>
+      </article>
+
+    </div>
+
+    <div class="inst part">
+      <div>
+        <h3>หลักสูตรเครื่องดนตรี</h3>
+        <p>ปรับเนื้อหาให้เหมาะกับระดับฝีมือและแนวเพลงที่ผู้เรียนชื่นชอบ</p>
+        <div class="chips">
+          <b>เปียโนและคีย์บอร์ด</b><b>ขับร้อง</b><b>กลอง</b><b>กีตาร์</b><b>ไวโอลิน</b><b>แดนซ์</b>
+        </div>
+      </div>
+      <a class="btn btn-primary" href="https://page.line.me/kawaiofficial" target="_blank" rel="noopener">ถามเรื่องคอร์สทางไลน์</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ the interactive moment ============ -->
+<section class="harmony" id="harmony" data-reveal>
+  <div class="wrap">
+    <svg class="staff" viewBox="0 0 1200 26" aria-hidden="true" preserveAspectRatio="none">
+      <line x1="0" y1="1" x2="1200" y2="1"/><line x1="0" y1="7" x2="1200" y2="7"/>
+      <line x1="0" y1="13" x2="1200" y2="13"/><line x1="0" y1="19" x2="1200" y2="19"/>
+      <line x1="0" y1="25" x2="1200" y2="25"/>
+      <ellipse class="note" cx="42" cy="13" rx="9" ry="6.4"/>
+    </svg>
+    <div class="head part">
+      <div class="kicker">ลองด้วยตัวเอง</div>
+      <h2>กดค้างไว้ แล้วฟังเสียงที่เกิดขึ้น</h2>
+      <p>เด็กห้าคน เสียงห้าเสียง กดค้างไว้จนครบ แล้วฟังว่าเสียงที่ต่างกันรวมกันเป็นอะไร เปิดลำโพงไว้ด้วยนะครับ</p>
+    </div>
+    <div class="hbox">
+      <div class="part">
+        <div class="hkeys" id="hkeys" aria-hidden="true">
+          <div class="k"><span class="cap">คนที่ 1</span></div>
+          <div class="k"><span class="cap">คนที่ 2</span></div>
+          <div class="k"><span class="cap">คนที่ 3</span></div>
+          <div class="k"><span class="cap">คนที่ 4</span></div>
+          <div class="k"><span class="cap">คนที่ 5</span></div>
+        </div>
+        <div class="holder">
+          <button class="hold-btn" id="holdBtn" aria-describedby="holdHelp"><span>กดค้างไว้</span></button>
+          <div class="hprog" id="holdHelp">กดค้างประมาณสองวินาที เปิดเสียงด้วยจะดีที่สุด</div>
+        </div>
+      </div>
+      <div class="hslot part">
+        <div class="payoff-idle" id="payoffIdle">
+          <div class="idle-big">ห้าเสียงกำลังรออยู่</div>
+          <p>กดค้างไว้ที่ปุ่มด้านซ้าย แล้วดูว่าเกิดอะไรขึ้น</p>
+        </div>
+        <div class="payoff" id="payoff">
+          <div class="big">ห้าเสียงที่ต่างกัน กลายเป็น <em>Harmony</em></div>
+          <p>นี่คือสิ่งที่เกิดขึ้นในห้องเรียนของเราทุกคาบ ไม่มีใครต้องเล่นเหมือนกัน แต่ทุกคนเล่นด้วยกันได้</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ examination (MOCK DATA: replace with real KAWAI exam info) ============ -->
+<section id="exam" data-reveal>
+  <div class="wrap">
+    <div class="head part">
+      <div class="kicker">Examination</div>
+      <h2>วัดระดับได้ โดยไม่ต้องแข่งกับใคร</h2>
+      <p>การสอบของเราวัดพัฒนาการของนักเรียนเทียบกับตัวเขาเองเมื่อหกเดือนก่อน ไม่ใช่เทียบกับเพื่อนในห้อง</p>
+    </div>
+    <div class="levels">
+      <div class="level part">
+        <div class="lv">Level 01</div>
+        <h3>Basic</h3>
+        <p>สำหรับนักเรียนที่เริ่มต้น เน้นพื้นฐานจังหวะ การฟัง และการอ่านโน้ตเบื้องต้น</p>
+      </div>
+      <div class="level part">
+        <div class="lv">Level 02</div>
+        <h3>Intermediate</h3>
+        <p>ประเมินทักษะการเล่นเพลงที่ซับซ้อนขึ้น และการเล่นร่วมกับผู้อื่น</p>
+      </div>
+      <div class="level part">
+        <div class="lv">Level 03</div>
+        <h3>Advanced</h3>
+        <p>วัดความสามารถในการตีความเพลงและแสดงออกทางดนตรีอย่างเป็นตัวของตัวเอง</p>
+      </div>
+    </div>
+    <div class="note-line part">จัดสอบปีละ 2 ครั้ง กลางปีและปลายปี นักเรียนที่ผ่านจะได้รับใบประกาศนียบัตรจาก KAWAI</div>
+  </div>
+</section>
+
+<!-- ============ events (MOCK DATA: replace with real event schedule) ============ -->
+<section class="events" id="events" data-reveal>
+  <div class="wrap">
+    <svg class="staff" viewBox="0 0 1200 26" aria-hidden="true" preserveAspectRatio="none">
+      <line x1="0" y1="1" x2="1200" y2="1"/><line x1="0" y1="7" x2="1200" y2="7"/>
+      <line x1="0" y1="13" x2="1200" y2="13"/><line x1="0" y1="19" x2="1200" y2="19"/>
+      <line x1="0" y1="25" x2="1200" y2="25"/>
+      <ellipse class="note" cx="42" cy="13" rx="9" ry="6.4"/>
+    </svg>
+    <div class="head part">
+      <div class="kicker">Events</div>
+      <h2>เวทีที่เด็กได้ยืนเอง</h2>
+    </div>
+    <div class="elist">
+      <article class="event part">
+        <div>
+          <div class="when">ธันวาคม ทุกปี</div>
+          <h3>KAWAI Music Recital</h3>
+          <p>เวทีให้นักเรียนทุกคนได้ขึ้นแสดงเดี่ยวหรือร่วมวงต่อหน้าครอบครัวและเพื่อน เพื่อสร้างความมั่นใจและภาคภูมิใจในตัวเอง</p>
+        </div>
+        <div class="epic"><img src="assets/event-1.jpg" alt="เด็กชายบรรเลงแกรนด์เปียโนบนเวทีคอนเสิร์ตต่อหน้าผู้ชม" width="1400" height="782" loading="lazy"></div>
+      </article>
+      <article class="event part">
+        <div>
+          <div class="when">จัดเป็นระยะตลอดปี</div>
+          <h3>Workshop สำหรับผู้ปกครองและเด็ก</h3>
+          <p>กิจกรรมสัมผัสดนตรีร่วมกันระหว่างผู้ปกครองและเด็กเล็ก ก่อนตัดสินใจสมัครเรียนจริง</p>
+        </div>
+        <div class="epic"><img src="assets/event-2.jpg" alt="พ่อแม่และลูกเล่นคีย์บอร์ดด้วยกันบนเบาะรองนั่งในห้องกิจกรรม" width="1400" height="782" loading="lazy"></div>
+      </article>
+      <article class="event part">
+        <div>
+          <div class="when">เมษายน และ ตุลาคม</div>
+          <h3>Music Camp ปิดเทอม</h3>
+          <p>ค่ายดนตรีช่วงปิดเทอม รวมกิจกรรมร้อง เล่น เต้น และเวิร์กช็อปเครื่องดนตรีหลากหลายชนิด</p>
+        </div>
+        <div class="epic"><img src="assets/event-3.jpg" alt="เด็ก ๆ ในเสื้อค่าย KAWAI Music Camp ตีกลองด้วยกันกลางแจ้ง" width="1400" height="670" loading="lazy"></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ testimonials (MOCK DATA: replace with real parent quotes) ============ -->
+<section id="reviews" data-reveal>
+  <div class="wrap">
+    <div class="head part">
+      <div class="kicker">Parents</div>
+      <h2>เสียงจากผู้ปกครอง</h2>
+    </div>
+    <div class="quotes">
+      <figure class="quote part" style="margin:0">
+        <span class="mark" aria-hidden="true">&ldquo;</span>
+        <blockquote style="margin:0"><p>ตั้งแต่พาน้องมาเรียนที่ KAWAI น้องกล้าแสดงออกมากขึ้น สนุกกับการไปเรียนทุกครั้ง ครูใจดีและสอนสนุกมากค่ะ</p></blockquote>
+        <figcaption class="who"><b>คุณแม่น้องพลอย</b><span>ผู้ปกครองนักเรียนคอร์ส Hello Music</span></figcaption>
+      </figure>
+      <figure class="quote part" style="margin:0">
+        <span class="mark" aria-hidden="true">&ldquo;</span>
+        <blockquote style="margin:0"><p>ชอบที่โรงเรียนเน้นความเป็นตัวของตัวเองของเด็กแต่ละคน ไม่กดดันเรื่องการแข่งขัน ทำให้ลูกผมรักการเล่นเปียโนจริง ๆ</p></blockquote>
+        <figcaption class="who"><b>คุณพ่อน้องภูมิ</b><span>ผู้ปกครองนักเรียนคอร์ส Sound Tree</span></figcaption>
+      </figure>
+      <figure class="quote part" style="margin:0">
+        <span class="mark" aria-hidden="true">&ldquo;</span>
+        <blockquote style="margin:0"><p>ประทับใจกิจกรรมยูริธมิกส์มากค่ะ น้องได้ขยับตัวไปกับดนตรี พัฒนาการทั้งด้านร่างกายและความมั่นใจดีขึ้นเห็นได้ชัด</p></blockquote>
+        <figcaption class="who"><b>คุณแม่น้องข้าวหอม</b><span>ผู้ปกครองนักเรียนคอร์ส Kulu Kulu Club</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ branches ============ -->
+<section class="branches" id="branches" data-reveal>
+  <div class="wrap">
+    <svg class="staff" viewBox="0 0 1200 26" aria-hidden="true" preserveAspectRatio="none">
+      <line x1="0" y1="1" x2="1200" y2="1"/><line x1="0" y1="7" x2="1200" y2="7"/>
+      <line x1="0" y1="13" x2="1200" y2="13"/><line x1="0" y1="19" x2="1200" y2="19"/>
+      <line x1="0" y1="25" x2="1200" y2="25"/>
+      <ellipse class="note" cx="42" cy="13" rx="9" ry="6.4"/>
+    </svg>
+    <div class="head part">
+      <div class="kicker">Branches</div>
+      <h2>12 สาขาทั่วประเทศ</h2>
+      <p>เลือกสาขาที่ใกล้บ้านที่สุด แล้วทักมาทางไลน์เพื่อนัดวันทดลองเรียน</p>
+    </div>
+
+    <div class="bgroup part">
+      <h3>กรุงเทพฯ และปริมณฑล</h3>
+      <div class="blist">
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>CentralwOrld</b><span>ชั้น 6 โซน Genius Planet ถนนราชดำริ ปทุมวัน กรุงเทพฯ</span></div></div>
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central Chaengwattana</b><span>ชั้น 8</span></div></div>
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central Bangna</b><span>ชั้น 5</span></div></div>
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central Rama 3</b><span>ชั้น 7</span></div></div>
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central EastVille</b><span>ชั้น 2</span></div></div>
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central Westgate</b><span>ชั้น G บางใหญ่ นนทบุรี</span></div></div>
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central Rama 2</b><span>บางขุนเทียน กรุงเทพฯ</span></div></div>
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central Plaza Mahachai</b><span>สมุทรสาคร</span></div></div>
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Future Park Rangsit</b><span>ปทุมธานี</span></div></div>
+      </div>
+    </div>
+
+    <div class="bgroup part">
+      <h3>ภาคเหนือ</h3>
+      <div class="blist one">
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central Chiang Mai</b><span>ชั้น 3</span></div></div>
+      </div>
+    </div>
+
+    <div class="bgroup part">
+      <h3>ภาคตะวันออก</h3>
+      <div class="blist two">
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central Chonburi</b><span>ชั้น 3</span></div></div>
+        <div class="branch"><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg><div><b>Central Si Racha</b><span>ชั้น 3</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ contact ============ -->
+<section class="contact" id="contact" data-reveal>
+  <div class="wrap">
+    <svg class="staff" viewBox="0 0 1200 26" aria-hidden="true" preserveAspectRatio="none">
+      <line x1="0" y1="1" x2="1200" y2="1"/><line x1="0" y1="7" x2="1200" y2="7"/>
+      <line x1="0" y1="13" x2="1200" y2="13"/><line x1="0" y1="19" x2="1200" y2="19"/>
+      <line x1="0" y1="25" x2="1200" y2="25"/>
+      <ellipse class="note" cx="42" cy="13" rx="9" ry="6.4"/>
+    </svg>
+    <div class="head part">
+      <div class="kicker">Contact</div>
+      <h2>พร้อมเริ่มต้นเส้นทางดนตรีไปกับ KAWAI แล้วหรือยัง</h2>
+      <p>ทักมาทางไลน์เร็วที่สุด เจ้าหน้าที่ตอบทุกวันในเวลาทำการ</p>
+    </div>
+    <div class="cgrid">
+      <div class="part">
+        <div class="lineblock">
+          <div class="tag">ช่องทางที่เร็วที่สุด</div>
+          <h3>ทักไลน์เพื่อจองคลาสเรียนทดลอง</h3>
+          <p>บอกอายุของลูกและสาขาที่สะดวก เราจะจัดวันและส่งรายละเอียดค่าเรียนให้ครบ</p>
+          <a class="btn btn-primary" href="https://page.line.me/kawaiofficial" target="_blank" rel="noopener">แอดไลน์</a>
+        </div>
+      </div>
+
+      <div class="part">
+        <h3 class="waystitle">ช่องทางอื่น</h3>
+        <div class="ways">
+          <a class="way" href="tel:0642265945"><svg class="ico" aria-hidden="true"><use href="#i-phone"></use></svg><span class="lbl">โทร</span><span class="val">064 226 5945</span></a>
+          <a class="way" href="mailto:Kawaithailand@gmail.com"><svg class="ico" aria-hidden="true"><use href="#i-mail"></use></svg><span class="lbl">อีเมล</span><span class="val">Kawaithailand@gmail.com</span></a>
+          <a class="way" href="https://facebook.com/kawaimusicschoolTH" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-fb"></use></svg><span class="lbl">Facebook</span><span class="val">kawaimusicschoolTH</span></a>
+          <a class="way" href="https://instagram.com/kawaimusicschool_th" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-ig"></use></svg><span class="lbl">Instagram</span><span class="val">kawaimusicschool_th</span></a>
+        </div>
+        <p class="waysnote">หรือเดินเข้ามาที่สาขาไหนก็ได้ใน 12 สาขา เจ้าหน้าที่พาชมห้องเรียนและแนะนำคอร์สที่เหมาะกับลูกให้</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="fgrid">
+    <div>
+      <img src="assets/logo.svg" alt="KAWAI Music School" width="500" height="45" loading="lazy">
+      <p>โรงเรียนสอนดนตรีคาไว ก่อตั้งที่ประเทศญี่ปุ่นปี 1956 ปัจจุบันมี 12 สาขาในประเทศไทย</p>
+    </div>
+    <div class="fcol">
+      <h4>เมนู</h4>
+      <a href="#about">เกี่ยวกับเรา</a>
+      <a href="#courses">คอร์สเรียน</a>
+      <a href="#exam">การสอบ</a>
+      <a href="#events">อีเวนท์</a>
+      <a href="#reviews">รีวิว</a>
+      <a href="#branches">สาขา</a>
+      <a href="#contact">ติดต่อ</a>
+    </div>
+    <div class="fcol">
+      <h4>ติดต่อ</h4>
+      <a href="https://page.line.me/kawaiofficial" target="_blank" rel="noopener">LINE: @kawaiofficial</a>
+      <a href="tel:0642265945">064 226 5945</a>
+      <a href="mailto:Kawaithailand@gmail.com">Kawaithailand@gmail.com</a>
+    </div>
+  </div>
+  <div class="fbot">
+    <div>&copy; 2026 KAWAI Music School Thailand</div>
+    <div class="social">
+      <a href="https://page.line.me/kawaiofficial" target="_blank" rel="noopener" aria-label="LINE"><svg class="ico" aria-hidden="true"><use href="#i-line"></use></svg></a>
+      <a href="https://facebook.com/kawaimusicschoolTH" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ico" aria-hidden="true"><use href="#i-fb"></use></svg></a>
+      <a href="https://instagram.com/kawaimusicschool_th" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ico" aria-hidden="true"><use href="#i-ig"></use></svg></a>
+    </div>
+  </div>
+</footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- seeded rng so every load splits identically ---------- */
+function rng(seed){var s=seed>>>0;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296};}
+
+/* ---------- split headlines into word spans, once ---------- */
+function splitWords(el,seed){
+  var text=el.textContent, words=text.split(' '), r=rng(seed);
+  var sr=document.createElement('span'); sr.className='sr'; sr.textContent=text;
+  var vis=document.createElement('span'); vis.setAttribute('aria-hidden','true');
+  var spread=0.55;
+  words.forEach(function(w,i){
+    var span=document.createElement('span');
+    span.className='w';
+    span.textContent=(i<words.length-1)?(w+' '):w;
+    span.style.setProperty('--th',(i/Math.max(1,words.length-1)*spread+r()*0.05).toFixed(3));
+    vis.appendChild(span);
+  });
+  el.textContent=''; el.appendChild(sr); el.appendChild(vis);
+}
+var splitSeed=7;
+Array.prototype.forEach.call(document.querySelectorAll('[data-split="word"]'),function(el){
+  splitWords(el,splitSeed++);
+});
+
+/* ---------- header state ---------- */
+var hdr=document.getElementById('hdr'), hdrSolid=false;
+function updateHeader(){
+  var want=window.scrollY>40;
+  if(want!==hdrSolid){hdrSolid=want;hdr.classList.toggle('solid',want);}
+}
+updateHeader();
+addEventListener('scroll',updateHeader,{passive:true});
+
+/* ---------- mobile menu ---------- */
+var menuBtn=document.getElementById('menuBtn'), nav=document.getElementById('nav');
+menuBtn.addEventListener('click',function(){
+  var open=nav.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded',open?'true':'false');
+});
+Array.prototype.forEach.call(nav.querySelectorAll('a'),function(a){
+  a.addEventListener('click',function(){
+    nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false');
+  });
+});
+
+/* ---------- the scroll journey ---------- */
+var hero=document.querySelector('.hero'), stage=document.getElementById('stage'),
+    shot=document.getElementById('shot'), cue=document.getElementById('cue');
+
+var bands=Array.prototype.map.call(document.querySelectorAll('.band'),function(el){
+  var r=(el.getAttribute('data-band')||'0,1').split(',');
+  var ramp=parseFloat(el.getAttribute('data-ramp'));
+  return {el:el,a:parseFloat(r[0]),b:parseFloat(r[1]),
+          ramp:isNaN(ramp)?0:ramp, op:-1, k:-1};
+});
+
+function smoothstep(p,e0,e1){
+  var t=Math.min(1,Math.max(0,(p-e0)/(e1-e0)));
+  return t*t*(3-2*t);
+}
+function clamp(v,lo,hi){return Math.min(hi,Math.max(lo,v));}
+
+function heroProgress(){
+  if(!hero) return 0;
+  var rect=hero.getBoundingClientRect();
+  var range=hero.offsetHeight-window.innerHeight;
+  if(range<=0) return 0;
+  return clamp(-rect.top/range,0,1);
+}
+
+var loadK=0, loadStart=0, loadDone=false;
+
+function updateCaptions(p){
+  for(var i=0;i<bands.length;i++){
+    var bd=bands[i], a=bd.a, b=bd.b;
+    var f=Math.min(0.02,(b-a)/3);
+    var inEase=(i===0)?1:smoothstep(p,a,a+f);
+    var outEase=(i===bands.length-1)?1:(1-smoothstep(p,b-f,b));
+    var op=Math.round(inEase*outEase*1000)/1000;
+    var ramp=bd.ramp||Math.min(0.025,(b-a)*0.35);
+    var k=clamp((p-a)/ramp,0,1);
+    if(i===0) k=Math.max(k,loadK);
+    k=Math.round(k*1000)/1000;
+    if(op!==bd.op){bd.op=op;bd.el.style.opacity=op;
+      bd.el.style.visibility=op<0.01?'hidden':'visible';}
+    if(Math.abs(k-bd.k)>0.008||k===0||k===1){
+      if(k!==bd.k){bd.k=k;bd.el.style.setProperty('--k',k);}
+    }
+  }
+}
+
+var lastShot=-1;
+function updateShot(p){
+  var v=Math.round(p*1000)/1000;
+  if(v===lastShot) return;
+  lastShot=v;
+  var scale=1+0.155*v, tx=-3.2*v, ty=1.6*v;
+  shot.style.transform='translate3d('+tx+'%,'+ty+'%,0) scale('+scale+')';
+  if(cue) cue.style.setProperty('--p',v);
+}
+
+var target=0, shown=0, rafId=null, lastTick=0, heroOnScreen=true;
+
+function tick(now){
+  var dt=Math.min(100,now-(lastTick||now));
+  lastTick=now;
+  var k=0.16;
+  shown+=(target-shown)*(1-Math.pow(1-k,dt/16.667));
+  var settled=Math.abs(target-shown)<0.0005;
+  if(settled){shown=target;}
+  if(!loadDone){
+    if(!loadStart) loadStart=now;
+    loadK=clamp((now-loadStart)/900,0,1);
+    if(loadK>=1) loadDone=true;
+  }
+  updateShot(shown);
+  updateCaptions(shown);
+  if(settled&&loadDone){rafId=null;lastTick=0;}
+  else{rafId=requestAnimationFrame(tick);}
+}
+
+function onScroll(){
+  target=heroProgress();
+  if(rafId===null&&heroOnScreen) rafId=requestAnimationFrame(tick);
+}
+
+if(hero&&'IntersectionObserver' in window){
+  new IntersectionObserver(function(entries){
+    heroOnScreen=entries[0].isIntersecting;
+    if(heroOnScreen&&rafId===null) rafId=requestAnimationFrame(tick);
+  },{rootMargin:'120px'}).observe(hero);
+}
+
+/* ---------- the five static-hero gates, kept live ---------- */
+var GATES=[
+  '(max-width: 720px)',
+  '(orientation: portrait) and (max-width: 1024px)',
+  '(orientation: portrait) and (pointer: coarse)',
+  '(orientation: landscape) and (pointer: coarse) and (max-height: 560px)',
+  '(prefers-reduced-motion: reduce)'
+];
+var scrubOn=false;
+function enableScrub(){
+  if(scrubOn||!hero) return;
+  scrubOn=true;
+  addEventListener('scroll',onScroll,{passive:true});
+  bands.forEach(function(b){b.op=-1;b.k=-1;});
+  lastShot=-1;
+  loadStart=0; loadK=0; loadDone=false;
+  unpinFinalStates();
+  target=heroProgress(); shown=target;
+  updateShot(target); updateCaptions(target);
+  onScroll();
+}
+function disableScrub(){
+  if(!scrubOn) return;
+  scrubOn=false;
+  removeEventListener('scroll',onScroll);
+  if(rafId!==null){cancelAnimationFrame(rafId);rafId=null;}
+}
+var MQLS=GATES.map(function(q){return matchMedia(q);});
+function applyHeroMode(){
+  var off=MQLS.some(function(m){return m.matches;});
+  if(off) disableScrub(); else enableScrub();
+}
+MQLS.forEach(function(m){
+  if(m.addEventListener) m.addEventListener('change',applyHeroMode);
+  else if(m.addListener) m.addListener(applyHeroMode);
+});
+
+/* ---------- reveal choreography ---------- */
+var revealEls=document.querySelectorAll('[data-reveal]');
+if('IntersectionObserver' in window){
+  var revObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('in');
+      revObs.unobserve(e.target);
+      setTimeout(function(){e.target.classList.add('done');},1700);
+    });
+  },{rootMargin:'0px 0px -12% 0px',threshold:0.08});
+  Array.prototype.forEach.call(revealEls,function(el){revObs.observe(el);});
+}else{
+  Array.prototype.forEach.call(revealEls,function(el){el.classList.add('in','done');});
+}
+
+/* ---------- the chord: five notes, synthesised in the browser ---------- */
+var actx=null;
+var NOTES=[261.63,329.63,392.00,493.88,587.33];   // C4 E4 G4 B4 D5, a Cmaj9
+function ensureAudio(){
+  if(actx) return actx;
+  var AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC) return null;
+  try{actx=new AC();}catch(e){actx=null;}
+  return actx;
+}
+function playNote(freq,delay,peak,dur){
+  if(!actx||actx.state!=='running') return;
+  var t=actx.currentTime+(delay||0);
+  var g=actx.createGain();
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(peak,t+0.014);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  var o1=actx.createOscillator(); o1.type='triangle'; o1.frequency.value=freq;
+  var o2=actx.createOscillator(); o2.type='sine';     o2.frequency.value=freq*2;
+  var g2=actx.createGain(); g2.gain.value=0.3;
+  o2.connect(g2); g2.connect(g); o1.connect(g); g.connect(actx.destination);
+  o1.start(t); o2.start(t);
+  o1.stop(t+dur+0.06); o2.stop(t+dur+0.06);
+}
+function playChord(){
+  for(var i=0;i<NOTES.length;i++) playNote(NOTES[i],i*0.045,0.13,2.6);
+}
+
+/* ---------- the interactive moment: hold to build the chord ---------- */
+var holdBtn=document.getElementById('holdBtn'),
+    hkeys=document.getElementById('hkeys'),
+    payoff=document.getElementById('payoff'),
+    payoffIdle=document.getElementById('payoffIdle'),
+    holdHelp=document.getElementById('holdHelp'),
+    keyEls=hkeys?Array.prototype.slice.call(hkeys.children):[],
+    thresholds=[0.14,0.32,0.50,0.68,0.88],
+    hold=0, holding=false, holdRaf=null, holdLast=0, holdDone=false,
+    keyState=[false,false,false,false,false], lastHelp='';
+
+function paintHold(silent){
+  holdBtn.style.setProperty('--h',hold.toFixed(3));
+  for(var i=0;i<keyEls.length;i++){
+    var on=hold>=thresholds[i];
+    if(on!==keyState[i]){
+      keyState[i]=on;
+      keyEls[i].classList.toggle('on',on);
+      if(on&&!silent) playNote(NOTES[i],0,0.16,1.9);
+    }
+  }
+  var txt=hold>=1?'ครบห้าเสียงแล้ว':(holding?'กดค้างไว้ต่อ':'กดค้างประมาณสองวินาที เปิดเสียงด้วยจะดีที่สุด');
+  if(txt!==lastHelp){lastHelp=txt;holdHelp.textContent=txt;}
+  if(hold>=1&&!holdDone){
+    holdDone=true;
+    payoff.classList.add('on');
+    payoffIdle.classList.add('off');
+    if(!silent) playChord();
+  }
+}
+function holdTick(now){
+  var dt=Math.min(100,now-(holdLast||now)); holdLast=now;
+  if(holding) hold=Math.min(1,hold+dt/1800);
+  else if(!holdDone) hold=Math.max(0,hold-dt/1100);
+  paintHold();
+  if((holding&&hold<1)||(!holding&&hold>0&&!holdDone)) holdRaf=requestAnimationFrame(holdTick);
+  else {holdRaf=null;holdLast=0;}
+}
+function startHold(e){
+  if(e&&e.cancelable) e.preventDefault();
+  if(holdDone) return;
+  var ctx=ensureAudio();                       // the press is the gesture that lets audio start
+  if(ctx&&ctx.state==='suspended') ctx.resume();
+  holding=true;
+  if(holdRaf===null) holdRaf=requestAnimationFrame(holdTick);
+}
+function endHold(){
+  holding=false;
+  if(holdRaf===null&&hold>0&&!holdDone) holdRaf=requestAnimationFrame(holdTick);
+}
+if(holdBtn){
+  holdBtn.addEventListener('pointerdown',startHold);
+  addEventListener('pointerup',endHold);
+  addEventListener('pointercancel',endHold);
+  holdBtn.addEventListener('keydown',function(e){
+    if(e.key===' '||e.key==='Enter'){e.preventDefault();startHold();}
+  });
+  holdBtn.addEventListener('keyup',function(e){
+    if(e.key===' '||e.key==='Enter') endHold();
+  });
+}
+function completeHoldInstantly(){
+  hold=1; holding=false;
+  if(holdRaf!==null){cancelAnimationFrame(holdRaf);holdRaf=null;}
+  paintHold(true);                             // no gesture behind this one, so no sound
+}
+
+/* ---------- reduced motion, both directions ---------- */
+var rmq=matchMedia('(prefers-reduced-motion: reduce)');
+function pinToFinalStates(){
+  Array.prototype.forEach.call(revealEls,function(el){el.classList.add('in','done');});
+  completeHoldInstantly();
+}
+function unpinFinalStates(){
+  if(!holdDone){
+    hold=0; holding=false; holdDone=false;
+    keyState=[false,false,false,false,false];
+    keyEls.forEach(function(k){k.classList.remove('on');});
+    payoff.classList.remove('on');
+    payoffIdle.classList.remove('off');
+    paintHold(true);
+  }
+}
+function onRM(e){
+  if(e.matches) pinToFinalStates();
+  else applyHeroMode();
+}
+if(rmq.addEventListener) rmq.addEventListener('change',onRM);
+else if(rmq.addListener) rmq.addListener(onRM);
+if(rmq.matches) pinToFinalStates();
+
+applyHeroMode();
+
+/* ---------- pause every animation on a hidden tab ---------- */
+addEventListener('visibilitychange',function(){
+  document.body.classList.toggle('paused',document.hidden);
+});
+
+})();
+</script>
+</body>
+</html>
