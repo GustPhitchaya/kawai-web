@@ -18,3 +18,4 @@ export { events, eventsHead } from "./events";
 export { testimonials, testimonialsHead } from "./testimonials";
 export { branchGroups, branchesHead } from "./branches";
 export { contact } from "./contact";
+export { statements } from "./statements";

@@ -44,9 +44,17 @@
 /* ============================== tokens ============================= */
 
 :root {
-  /* ---- palette (verbatim from the draft) ---- */
-  --kawai-canvas: #faf7f3;
-  --kawai-panel: #ffffff;
+  /* ---- palette ----
+     Canvas and panel are deliberately further apart than the draft had
+     them (#FAF7F3 vs pure #FFFFFF read as one colour, which flattened
+     the whole page's section rhythm). ~4 L* apart is enough for the eye
+     to register the alternation without it becoming stripes.
+     `--kawai-canvas-rgb` exists so the hero veils can tint with alpha
+     off the same value instead of hardcoding it. */
+  --kawai-canvas-rgb: 247 241 234;
+  --kawai-canvas: rgb(var(--kawai-canvas-rgb));
+  --kawai-panel: #fffcf8;
+  --kawai-warm: #f3e4d8;
   --kawai-deep: #0f1015;
   --kawai-brand: #db2a1b;
   --kawai-brand-hover: #b92214;
@@ -68,8 +76,8 @@
   --kawai-surface-deep-2: #1c1d25; /* .way:hover */
 
   /* ---- image placeholder tints ---- */
-  --kawai-placeholder: #ede7e0;
-  --kawai-placeholder-warm: #e9e4de;
+  --kawai-placeholder: #ece4da;
+  --kawai-placeholder-warm: #e7e0d5;
 
   /* ---- shadcn semantic layer, expressed in KAWAI terms ---- */
   --radius: 0.875rem;
@@ -83,7 +91,7 @@
   --primary-foreground: #ffffff;
   --secondary: var(--kawai-canvas);
   --secondary-foreground: var(--kawai-ink);
-  --muted: #f2eee9;
+  --muted: #f4eee6;
   --muted-foreground: var(--kawai-ink-soft);
   --accent: var(--kawai-brand-muted);
   --accent-foreground: var(--kawai-brand-hover);
@@ -119,6 +127,7 @@
   /* ---- KAWAI namespace (what we actually author with) ---- */
   --color-canvas: var(--kawai-canvas);
   --color-panel: var(--kawai-panel);
+  --color-warm: var(--kawai-warm);
   --color-deep: var(--kawai-deep);
   --color-brand: var(--kawai-brand);
   --color-brand-hover: var(--kawai-brand-hover);
@@ -146,7 +155,7 @@
   --font-heading: var(--font-prompt), system-ui, sans-serif;
 
   /* ---- fluid type scale (clamps lifted verbatim) ---- */
-  --text-body: clamp(15px, 1.02vw, 17px);
+  --text-body: clamp(16px, 1.05vw, 18px);
   --text-body--line-height: 1.75;
   --text-h1: clamp(1.9rem, 4.15vw, 3.55rem);
   --text-h1--line-height: 1.24;
@@ -176,6 +185,8 @@
   --text-philo--line-height: 1.75;
   --text-pillword: clamp(1.25rem, 2.2vw, 1.9rem);
   --text-pillword--line-height: 1.4;
+  --text-statement: clamp(2rem, 6.5vw, 5.5rem);
+  --text-statement--line-height: 1.16;
   --text-payoff: clamp(1.7rem, 3.6vw, 2.9rem);
   --text-payoff--line-height: 1.2;
   --text-idle: clamp(1.3rem, 2.4vw, 1.9rem);
@@ -219,16 +230,16 @@
 
   /* ---- radii ---- */
   --radius-pill: 999px;
-  --radius-strength: 22px; /* .spic */
-  --radius-card: 20px; /* .course, .ppic, .hilite, .lineblock */
-  --radius-tile: 18px; /* .level, .quote, .epic, .shotwrap */
-  --radius-grid: 16px; /* .blist, .ways */
-  --radius-thumb: 14px; /* .course .pic */
+  --radius-strength: 26px; /* .spic */
+  --radius-card: 24px; /* .course, .ppic, .hilite, .lineblock */
+  --radius-tile: 22px; /* .level, .quote, .epic, .shotwrap */
+  --radius-grid: 20px; /* .blist, .ways */
+  --radius-thumb: 16px; /* .course .pic */
   --radius-nav: 10px;
 
   /* ---- shadows ---- */
   --shadow-panel:
-    0 1px 2px rgb(22 23 28 / 0.05), 0 12px 40px rgb(22 23 28 / 0.07);
+    0 1px 2px rgb(86 54 38 / 0.06), 0 14px 44px rgb(86 54 38 / 0.10);
   --shadow-brand: 0 6px 22px rgb(219 42 27 / 0.24);
   --shadow-brand-hover: 0 10px 30px rgb(219 42 27 / 0.3);
 
@@ -467,11 +478,11 @@
     pointer-events: none;
     background: linear-gradient(
       101deg,
-      rgb(250 247 243 / 0.97) 0%,
-      rgb(250 247 243 / 0.94) 30%,
-      rgb(250 247 243 / 0.66) 48%,
-      rgb(250 247 243 / 0.12) 66%,
-      rgb(250 247 243 / 0) 78%
+      rgb(var(--kawai-canvas-rgb) / 0.97) 0%,
+      rgb(var(--kawai-canvas-rgb) / 0.94) 30%,
+      rgb(var(--kawai-canvas-rgb) / 0.66) 48%,
+      rgb(var(--kawai-canvas-rgb) / 0.12) 66%,
+      rgb(var(--kawai-canvas-rgb) / 0) 78%
     );
   }
   .hero-veil-top {
@@ -480,10 +491,10 @@
     pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgb(250 247 243 / 0.8) 0%,
-      rgb(250 247 243 / 0) 22%,
-      rgb(250 247 243 / 0) 78%,
-      rgb(250 247 243 / 0.5) 100%
+      rgb(var(--kawai-canvas-rgb) / 0.8) 0%,
+      rgb(var(--kawai-canvas-rgb) / 0) 22%,
+      rgb(var(--kawai-canvas-rgb) / 0) 78%,
+      rgb(var(--kawai-canvas-rgb) / 0.5) 100%
     );
   }
 
@@ -495,9 +506,9 @@
     z-index: -1;
     background: radial-gradient(
       ellipse 78% 66% at 42% 50%,
-      rgb(252 250 247 / 0.92) 0%,
-      rgb(252 250 247 / 0.66) 46%,
-      rgb(252 250 247 / 0) 78%
+      rgb(var(--kawai-canvas-rgb) / 0.92) 0%,
+      rgb(var(--kawai-canvas-rgb) / 0.66) 46%,
+      rgb(var(--kawai-canvas-rgb) / 0) 78%
     );
   }
 
@@ -510,7 +521,7 @@
   }
   .piano-keys i {
     flex: 1;
-    background: linear-gradient(180deg, #fff, #f0ebe5);
+    background: linear-gradient(180deg, #fffcf8, #efe7dd);
     border: 1px solid var(--color-line);
     border-radius: 0 0 4px 4px;
     height: 100%;

@@ -221,6 +221,20 @@ export interface ContactContent {
   waysNote: string;
 }
 
+/**
+ * A full-width typographic break between sections. `seed` feeds the
+ * deterministic word-split LCG and must not collide with the hero's
+ * seeds (7 and 8) or the headline would hydrate with a mismatch.
+ */
+export interface Statement {
+  id: string;
+  text: string;
+  /** Whole space-separated words to render in the brand colour. */
+  emphasis: string[];
+  tone: "canvas" | "deep";
+  seed: number;
+}
+
 export interface FooterColumn {
   heading: string;
   links: Array<{ label: string; href: string; external?: boolean }>;

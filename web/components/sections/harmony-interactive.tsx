@@ -1,12 +1,25 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { useChordSynth } from "@/hooks/use-chord-synth";
 import { useHoldProgress } from "@/hooks/use-hold-progress";
+import { useSceneEnabled } from "@/hooks/use-scene-enabled";
 import { harmony } from "@/content";
+import { HarmonyCaptions, HarmonyKeysCss } from "./harmony-keys-css";
 
 const FREQS = harmony.keys.map((key) => key.freq);
+
+/**
+ * Three.js is only fetched when this actually renders, which is gated
+ * on desktop + fine pointer + no reduced motion + WebGL + in view. On
+ * anything else the chunk is never requested at all.
+ */
+const HarmonyScene = dynamic(() => import("@/components/three/harmony-scene"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export function HarmonyInteractive() {
   const reduce = useReducedMotion();
@@ -68,6 +81,13 @@ export function HarmonyInteractive() {
     [done, ensure, start],
   );
 
+  // Stay on the CSS keys until the scene is both allowed and on screen,
+  // so the three chunk is never fetched for visitors who never get here.
+  const stageRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(stageRef, { once: true, amount: 0.3 });
+  const sceneEnabled = useSceneEnabled();
+  const showScene = sceneEnabled && inView;
+
   const helpText = done
     ? harmony.help.done
     : holding
@@ -78,29 +98,18 @@ export function HarmonyInteractive() {
     <div className="grid grid-cols-2 items-center gap-gap-hbox max-dt:grid-cols-1">
       <div>
         <div
-          className="flex h-[clamp(150px,20vw,230px)] items-end gap-2.5 max-tb:h-[150px]"
+          ref={stageRef}
+          className="relative h-[clamp(150px,20vw,230px)] max-tb:h-[150px]"
           aria-hidden="true"
         >
-          {harmony.keys.map((key, i) => (
-            <div
-              key={key.caption}
-              data-on={lit[i]}
-              style={{ height: `${key.heightPct}%` }}
-              className={`hkey duration-[550ms] ease-kawai relative flex-1 overflow-hidden rounded-t-lg rounded-b-xl border bg-white/7 transition-[transform,border-color] ${
-                lit[i]
-                  ? "-translate-y-[14px] border-brand/60"
-                  : "border-white/13"
-              }`}
-            >
-              <span
-                className={`text-label duration-500 ease-kawai absolute inset-x-0 bottom-[14px] z-[2] text-center font-mono tracking-[0.1em] transition-colors ${
-                  lit[i] ? "text-white" : "text-white/72"
-                }`}
-              >
-                {key.caption}
-              </span>
-            </div>
-          ))}
+          {showScene ? (
+            <>
+              <HarmonyScene progress={progress} done={done} />
+              <HarmonyCaptions lit={lit} />
+            </>
+          ) : (
+            <HarmonyKeysCss lit={lit} />
+          )}
         </div>
 
         <div className="mt-[30px] flex flex-wrap items-center gap-[18px]">

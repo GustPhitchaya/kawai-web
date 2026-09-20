@@ -5,6 +5,7 @@ import { MotionProvider } from "@/components/layout/motion-provider";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SkipLink } from "@/components/layout/skip-link";
+import { StaffProgress } from "@/components/layout/staff-progress";
 import { StructuredData } from "@/components/layout/structured-data";
 import { IconSprite } from "@/components/primitives/icon-sprite";
 import { siteConfig } from "@/content";
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
             <SiteFooter />
           </div>
+          <StaffProgress />
         </MotionProvider>
       </body>
     </html>
