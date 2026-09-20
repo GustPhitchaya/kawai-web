@@ -1,0 +1,643 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* ------------------------------------------------------------------ *
+ * KAWAI Music School — design system
+ *
+ * Token source of truth: draft2/KAWAI Music School-draft2.html :root
+ * Naming rule: the brand red is `brand`, NEVER `accent` — shadcn owns
+ * `--accent` as its subtle hover wash. The brand red is mapped onto
+ * shadcn's `--primary` and `--ring`, so generated components inherit
+ * the KAWAI look with no edits.
+ *
+ * The site is deliberately light-only, matching the draft. The `dark`
+ * variant stays declared so shadcn components compile.
+ * ------------------------------------------------------------------ */
+
+@custom-variant dark (&:is(.dark *));
+
+/* The five gates that disable the scroll-scrub hero, mirroring the
+   source's media queries exactly. `scrub-off:` applies when the
+   cinematic hero must be replaced by the static one. */
+@custom-variant scrub-off {
+  @media (width <= 720px) {
+    @slot;
+  }
+  @media (orientation: portrait) and (width <= 1024px) {
+    @slot;
+  }
+  @media (orientation: portrait) and (pointer: coarse) {
+    @slot;
+  }
+  @media (orientation: landscape) and (pointer: coarse) and (height <= 560px) {
+    @slot;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    @slot;
+  }
+}
+
+@custom-variant coarse (@media (pointer: coarse));
+@custom-variant short (@media (height <= 560px));
+
+/* ============================== tokens ============================= */
+
+:root {
+  /* ---- palette (verbatim from the draft) ---- */
+  --kawai-canvas: #faf7f3;
+  --kawai-panel: #ffffff;
+  --kawai-deep: #0f1015;
+  --kawai-brand: #db2a1b;
+  --kawai-brand-hover: #b92214;
+  --kawai-brand-muted: rgb(219 42 27 / 0.16);
+  --kawai-brand-light: #f2705e; /* the brand lifted for dark sections */
+  --kawai-brand-ink: #b92214; /* the brand deepened for small text on paper */
+  --kawai-ink: #16171c;
+  --kawai-ink-soft: #5f5c58;
+  --kawai-line: rgb(22 23 28 / 0.12);
+  --kawai-line-strong: rgb(22 23 28 / 0.28);
+  --kawai-line-btn: rgb(22 23 28 / 0.55);
+
+  /* ---- the on-dark set (.harmony / .contact / footer) ---- */
+  --kawai-on-deep: #f3f0ec;
+  --kawai-on-deep-muted: rgb(243 240 236 / 0.68);
+  --kawai-on-deep-faint: rgb(243 240 236 / 0.5);
+  --kawai-line-on-deep: rgb(255 255 255 / 0.12);
+  --kawai-surface-deep-1: #14151b; /* .way */
+  --kawai-surface-deep-2: #1c1d25; /* .way:hover */
+
+  /* ---- image placeholder tints ---- */
+  --kawai-placeholder: #ede7e0;
+  --kawai-placeholder-warm: #e9e4de;
+
+  /* ---- shadcn semantic layer, expressed in KAWAI terms ---- */
+  --radius: 0.875rem;
+  --background: var(--kawai-canvas);
+  --foreground: var(--kawai-ink);
+  --card: var(--kawai-panel);
+  --card-foreground: var(--kawai-ink);
+  --popover: var(--kawai-panel);
+  --popover-foreground: var(--kawai-ink);
+  --primary: var(--kawai-brand);
+  --primary-foreground: #ffffff;
+  --secondary: var(--kawai-canvas);
+  --secondary-foreground: var(--kawai-ink);
+  --muted: #f2eee9;
+  --muted-foreground: var(--kawai-ink-soft);
+  --accent: var(--kawai-brand-muted);
+  --accent-foreground: var(--kawai-brand-hover);
+  --destructive: #a31710;
+  --destructive-foreground: #ffffff;
+  --border: var(--kawai-line);
+  --input: var(--kawai-line-btn);
+  --ring: var(--kawai-brand);
+}
+
+@theme inline {
+  /* ---- shadcn namespace (required by generated components) ---- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* ---- KAWAI namespace (what we actually author with) ---- */
+  --color-canvas: var(--kawai-canvas);
+  --color-panel: var(--kawai-panel);
+  --color-deep: var(--kawai-deep);
+  --color-brand: var(--kawai-brand);
+  --color-brand-hover: var(--kawai-brand-hover);
+  --color-brand-muted: var(--kawai-brand-muted);
+  --color-brand-light: var(--kawai-brand-light);
+  --color-brand-ink: var(--kawai-brand-ink);
+  --color-ink: var(--kawai-ink);
+  --color-ink-soft: var(--kawai-ink-soft);
+  --color-line: var(--kawai-line);
+  --color-line-strong: var(--kawai-line-strong);
+  --color-line-btn: var(--kawai-line-btn);
+  --color-on-deep: var(--kawai-on-deep);
+  --color-on-deep-muted: var(--kawai-on-deep-muted);
+  --color-on-deep-faint: var(--kawai-on-deep-faint);
+  --color-line-on-deep: var(--kawai-line-on-deep);
+  --color-deep-1: var(--kawai-surface-deep-1);
+  --color-deep-2: var(--kawai-surface-deep-2);
+  --color-placeholder: var(--kawai-placeholder);
+  --color-placeholder-warm: var(--kawai-placeholder-warm);
+
+  /* ---- fonts (values injected by next/font in app/layout.tsx) ---- */
+  --font-display: var(--font-prompt), system-ui, sans-serif;
+  --font-sans: var(--font-noto-thai), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), var(--font-noto-thai), monospace;
+  --font-heading: var(--font-prompt), system-ui, sans-serif;
+
+  /* ---- fluid type scale (clamps lifted verbatim) ---- */
+  --text-body: clamp(15px, 1.02vw, 17px);
+  --text-body--line-height: 1.75;
+  --text-h1: clamp(1.9rem, 4.15vw, 3.55rem);
+  --text-h1--line-height: 1.24;
+  --text-h1-static: clamp(1.85rem, 7.4vw, 2.6rem);
+  --text-h1-static--line-height: 1.24;
+  --text-h2: clamp(1.6rem, 3.35vw, 2.85rem);
+  --text-h2--line-height: 1.24;
+  --text-h2-contact: clamp(1.75rem, 4vw, 3.1rem);
+  --text-h2-contact--line-height: 1.24;
+  --text-h3: clamp(1.2rem, 2.05vw, 1.72rem);
+  --text-h3--line-height: 1.24;
+  --text-h3-course: clamp(1.12rem, 1.65vw, 1.42rem);
+  --text-h3-course--line-height: 1.24;
+  --text-h3-event: clamp(1.12rem, 1.75vw, 1.5rem);
+  --text-h3-event--line-height: 1.24;
+  --text-h3-hilite: clamp(1.2rem, 2vw, 1.68rem);
+  --text-h3-hilite--line-height: 1.38;
+  --text-h3-line: clamp(1.2rem, 1.9vw, 1.55rem);
+  --text-h3-line--line-height: 1.24;
+  --text-lead: clamp(1.35rem, 2.9vw, 2.5rem);
+  --text-lead--line-height: 1.3;
+  --text-sub: clamp(0.95rem, 1.15vw, 1.08rem);
+  --text-sub--line-height: 1.75;
+  --text-head-lead: clamp(0.98rem, 1.15vw, 1.1rem);
+  --text-head-lead--line-height: 1.75;
+  --text-philo: clamp(1rem, 1.1vw, 1.08rem);
+  --text-philo--line-height: 1.75;
+  --text-pillword: clamp(1.25rem, 2.2vw, 1.9rem);
+  --text-pillword--line-height: 1.4;
+  --text-payoff: clamp(1.7rem, 3.6vw, 2.9rem);
+  --text-payoff--line-height: 1.2;
+  --text-idle: clamp(1.3rem, 2.4vw, 1.9rem);
+  --text-idle--line-height: 1.3;
+  --text-waystitle: clamp(1.1rem, 1.7vw, 1.35rem);
+  --text-waystitle--line-height: 1.24;
+  --text-num: clamp(1.5rem, 2.8vw, 2.3rem);
+  --text-num--line-height: 1;
+  --text-kicker: 0.72rem;
+  --text-kicker--line-height: 1.4;
+  --text-label: 0.68rem;
+  --text-label--line-height: 1.4;
+  --text-tag: 0.7rem;
+  --text-tag--line-height: 1.4;
+
+  /* ---- spacing: the fluid rhythm ---- */
+  --spacing-gutter: clamp(20px, 5vw, 72px); /* was --pad */
+  --spacing-section: clamp(76px, 10vw, 140px);
+  --spacing-head: clamp(38px, 5vw, 64px);
+  --spacing-row: clamp(30px, 4vw, 58px);
+  --spacing-row-event: clamp(26px, 3.4vw, 46px);
+  --spacing-gap-lg: clamp(30px, 4.5vw, 72px);
+  --spacing-gap-md: clamp(26px, 4.4vw, 72px);
+  --spacing-gap-sm: clamp(14px, 1.8vw, 24px);
+  --spacing-gap-xs: clamp(14px, 1.6vw, 20px);
+  --spacing-gap-course: clamp(18px, 2.6vw, 38px);
+  --spacing-gap-hbox: clamp(30px, 5vw, 80px);
+  --spacing-gap-hilite: clamp(22px, 4vw, 60px);
+  --spacing-card: clamp(24px, 2.8vw, 36px);
+  --spacing-card-lg: clamp(24px, 2.8vw, 34px);
+  --spacing-panel: clamp(26px, 3.2vw, 46px);
+  --spacing-panel-sm: clamp(26px, 3vw, 38px);
+  --spacing-branch: clamp(18px, 2vw, 26px);
+  --spacing-inst: clamp(22px, 2.8vw, 34px);
+  --spacing-hilite-top: clamp(30px, 3.8vw, 54px);
+  --spacing-group: clamp(32px, 4vw, 52px);
+  --spacing-note: clamp(22px, 2.6vw, 34px);
+  --spacing-static-hero: clamp(104px, 16vh, 150px);
+  --spacing-footer: clamp(48px, 6vw, 76px);
+  --spacing-footer-gap: clamp(28px, 4vw, 60px);
+
+  /* ---- radii ---- */
+  --radius-pill: 999px;
+  --radius-strength: 22px; /* .spic */
+  --radius-card: 20px; /* .course, .ppic, .hilite, .lineblock */
+  --radius-tile: 18px; /* .level, .quote, .epic, .shotwrap */
+  --radius-grid: 16px; /* .blist, .ways */
+  --radius-thumb: 14px; /* .course .pic */
+  --radius-nav: 10px;
+
+  /* ---- shadows ---- */
+  --shadow-panel:
+    0 1px 2px rgb(22 23 28 / 0.05), 0 12px 40px rgb(22 23 28 / 0.07);
+  --shadow-brand: 0 6px 22px rgb(219 42 27 / 0.24);
+  --shadow-brand-hover: 0 10px 30px rgb(219 42 27 / 0.3);
+
+  /* ---- easing ---- */
+  --ease-kawai: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---- layout ---- */
+  --container-wrap: 1220px;
+
+  /* ---- breakpoints mirroring the source's max-width queries ---- */
+  --breakpoint-ph: 521px; /* complement of max-width: 520px  */
+  --breakpoint-tb: 721px; /* complement of max-width: 720px  */
+  --breakpoint-dt: 981px; /* complement of max-width: 980px  */
+  --breakpoint-nav: 1141px; /* complement of max-width: 1140px */
+
+  /* ---- ambient keyframes ---- */
+  --animate-envdrift: envdrift 96s var(--ease-soft) -22s infinite alternate;
+  --animate-staffdrift: staffdrift 90s var(--ease-soft) -30s infinite alternate;
+  --animate-breathe: breathe 9s var(--ease-soft) -3s infinite alternate;
+  --animate-float: float 17s var(--ease-soft) infinite alternate;
+  --animate-cue: cue 2.6s var(--ease-soft) -0.6s infinite;
+
+  @keyframes envdrift {
+    from {
+      transform: translate3d(-2%, -1.5%, 0) scale(1.02);
+    }
+    to {
+      transform: translate3d(2.5%, 2%, 0) scale(1.08);
+    }
+  }
+  @keyframes staffdrift {
+    from {
+      transform: translate3d(0, -6vh, 0);
+    }
+    to {
+      transform: translate3d(0, 7vh, 0);
+    }
+  }
+  @keyframes breathe {
+    from {
+      transform: scale(0.9);
+      opacity: 0.6;
+    }
+    to {
+      transform: scale(1.12);
+      opacity: 1;
+    }
+  }
+  @keyframes float {
+    from {
+      transform: translate3d(0, 10px, 0);
+    }
+    to {
+      transform: translate3d(14px, -18px, 0);
+    }
+  }
+  @keyframes cue {
+    0% {
+      transform: translateX(-100%);
+    }
+    60%,
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
+/* ============================== base =============================== */
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.75;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.24;
+    letter-spacing: -0.005em;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  :focus-visible {
+    outline: 2.5px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* 44px tap targets on touch devices */
+  @media (pointer: coarse) {
+    [data-tap] {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+      transition-delay: 0s !important;
+    }
+  }
+
+  /* pause ambient animation while the tab is hidden */
+  body[data-paused="true"] *,
+  body[data-paused="true"] *::before,
+  body[data-paused="true"] *::after {
+    animation-play-state: paused !important;
+  }
+}
+
+/* =========================== components ============================ *
+ * Only the handful of things utilities genuinely cannot express:
+ * structural negative margins, multi-child nth-of-type choreography,
+ * and pseudo-element gradients.
+ * ------------------------------------------------------------------ */
+
+@layer components {
+  /* --- sprite icons: 1em square, inheriting the current colour --- */
+  .ico {
+    width: 1em;
+    height: 1em;
+    display: block;
+    flex: 0 0 auto;
+    fill: currentColor;
+  }
+  .ico .stroked,
+  .stroked {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* --- the fixed environment layer: drifting glow + staff rules --- */
+  .env-glow {
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(
+        58% 44% at 76% 12%,
+        rgb(219 42 27 / 0.055),
+        transparent 70%
+      ),
+      radial-gradient(
+        52% 40% at 12% 82%,
+        rgb(219 42 27 / 0.035),
+        transparent 72%
+      );
+    animation: var(--animate-envdrift);
+  }
+
+  .env-rules {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 0;
+    opacity: 0.5;
+    animation: var(--animate-staffdrift);
+  }
+  .env-rules i {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgb(22 23 28 / 0.055);
+  }
+  .env-rules i:nth-child(1) {
+    top: -84px;
+  }
+  .env-rules i:nth-child(2) {
+    top: -42px;
+  }
+  .env-rules i:nth-child(3) {
+    top: 0;
+  }
+  .env-rules i:nth-child(4) {
+    top: 42px;
+  }
+  .env-rules i:nth-child(5) {
+    top: 84px;
+  }
+
+  /* --- the two gradient veils that lift text off the hero photo --- */
+  .hero-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      101deg,
+      rgb(250 247 243 / 0.97) 0%,
+      rgb(250 247 243 / 0.94) 30%,
+      rgb(250 247 243 / 0.66) 48%,
+      rgb(250 247 243 / 0.12) 66%,
+      rgb(250 247 243 / 0) 78%
+    );
+  }
+  .hero-veil-top {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgb(250 247 243 / 0.8) 0%,
+      rgb(250 247 243 / 0) 22%,
+      rgb(250 247 243 / 0) 78%,
+      rgb(250 247 243 / 0.5) 100%
+    );
+  }
+
+  /* --- the soft halo behind each hero caption --- */
+  .band-halo {
+    position: absolute;
+    inset: -14% -22% -14% -40%;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(
+      ellipse 78% 66% at 42% 50%,
+      rgb(252 250 247 / 0.92) 0%,
+      rgb(252 250 247 / 0.66) 46%,
+      rgb(252 250 247 / 0) 78%
+    );
+  }
+
+  /* --- decorative piano keys (the black keys must overlap) --- */
+  .piano-keys {
+    display: flex;
+    height: 72px;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+  .piano-keys i {
+    flex: 1;
+    background: linear-gradient(180deg, #fff, #f0ebe5);
+    border: 1px solid var(--color-line);
+    border-radius: 0 0 4px 4px;
+    height: 100%;
+    margin-left: -1px;
+  }
+  .piano-keys i.blk {
+    flex: 0 0 auto;
+    width: 11px;
+    height: 62%;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(180deg, #2a2b33, #141519);
+    border-color: transparent;
+    border-radius: 0 0 3px 3px;
+    margin: 0 -6px;
+  }
+
+  /* --- the breathing glow inside the philosophy highlight --- */
+  .hilite-glow::after {
+    content: "";
+    position: absolute;
+    right: -70px;
+    top: -70px;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(219 42 27 / 0.13), transparent 66%);
+    animation: var(--animate-breathe);
+  }
+
+  /* --- six floating dots, each with its own drift offset --- */
+  .dots {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .dots i {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-brand);
+    opacity: 0.16;
+    animation: var(--animate-float);
+  }
+  .dots i:nth-child(1) {
+    left: 8%;
+    top: 26%;
+    animation-delay: -2s;
+  }
+  .dots i:nth-child(2) {
+    left: 24%;
+    top: 68%;
+    animation-delay: -6s;
+    width: 4px;
+    height: 4px;
+  }
+  .dots i:nth-child(3) {
+    left: 47%;
+    top: 16%;
+    animation-delay: -10s;
+  }
+  .dots i:nth-child(4) {
+    left: 63%;
+    top: 74%;
+    animation-delay: -4s;
+    width: 3px;
+    height: 3px;
+  }
+  .dots i:nth-child(5) {
+    left: 82%;
+    top: 38%;
+    animation-delay: -13s;
+  }
+  .dots i:nth-child(6) {
+    left: 93%;
+    top: 62%;
+    animation-delay: -8s;
+    width: 4px;
+    height: 4px;
+  }
+
+  /* --- the harmony key lighting overlay --- */
+  .hkey::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: linear-gradient(
+      180deg,
+      rgb(219 42 27 / 0.16),
+      rgb(219 42 27 / 0.72)
+    );
+    transition: opacity 0.5s var(--ease-kawai);
+  }
+  .hkey[data-on="true"]::after {
+    opacity: 1;
+  }
+
+  /* --- the scroll cue's travelling tick --- */
+  .cue-track::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-brand);
+    animation: var(--animate-cue);
+  }
+
+  /* --- the hairline that trails a kicker --- */
+  .kicker-rule::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-brand-muted);
+    max-width: 80px;
+  }
+  .kicker-rule[data-tone="deep"]::after {
+    background: rgb(242 112 94 / 0.34);
+    max-width: 80px;
+  }
+
+  /* --- the rule that trails a branch-group heading --- */
+  .group-rule::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-line);
+  }
+}
