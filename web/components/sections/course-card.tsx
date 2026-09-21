@@ -1,39 +1,22 @@
 import Image from "next/image";
-import { cn } from "cn";
 import { Pill } from "@/components/primitives/pill";
 import { Button } from "@/components/ui/button";
 import type { Course } from "@/content/types";
 
 /**
- * One course, as a portrait card for the horizontal track.
+ * One course, as a portrait card for the horizontal row.
  *
- * The old row layout gave the photo 264×185 next to a wide column of
- * text, which read as a directory listing. Standing the card up lets
- * the photograph carry the card — these are pictures of children
- * enjoying themselves, and they were the smallest thing on screen.
+ * The old stacked layout gave the photo 264×185 next to a wide column
+ * of text, which read as a directory listing. Standing the card up lets
+ * the photograph carry it — these are pictures of children enjoying
+ * themselves, and they were the smallest thing on screen.
+ *
+ * Every card is presented identically; the only state it carries is
+ * hover, using the same lift the exam and review cards use.
  */
-export function CourseCard({
-  course,
-  index,
-  active,
-  onFocus,
-}: {
-  course: Course;
-  index: number;
-  active: boolean;
-  onFocus?: (index: number) => void;
-}) {
+export function CourseCard({ course }: { course: Course }) {
   return (
-    <article
-      data-active={active}
-      className={cn(
-        // The inactive state is carried by scale and shadow, never by
-        // opacity on the card: dimming the whole card takes its body
-        // text below AA contrast, which axe rightly flags.
-        "bg-panel border-line rounded-card duration-500 ease-kawai group flex w-[min(460px,72vw)] shrink-0 snap-center flex-col overflow-hidden border transition-[transform,box-shadow]",
-        active ? "shadow-panel scale-100" : "scale-[0.965]",
-      )}
-    >
+    <article className="bg-panel border-line rounded-card duration-[550ms] ease-kawai group flex w-[min(460px,72vw)] shrink-0 snap-start flex-col overflow-hidden border transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-panel">
       <div className="bg-placeholder-warm relative aspect-[16/10] overflow-hidden">
         <Image
           src={course.image.src}
@@ -41,10 +24,7 @@ export function CourseCard({
           fill
           sizes="(max-width: 980px) 80vw, 460px"
           loading="lazy"
-          className={cn(
-            "duration-[1100ms] ease-kawai object-cover transition-transform group-hover:scale-105",
-            !active && "opacity-70",
-          )}
+          className="duration-[1100ms] ease-kawai object-cover transition-transform group-hover:scale-105"
         />
         <span className="rounded-pill bg-panel/92 text-brand-ink absolute top-4 left-4 px-3 py-1.5 font-mono text-[0.72rem] tracking-[0.14em] backdrop-blur-sm">
           {course.ageLabel}
@@ -64,9 +44,7 @@ export function CourseCard({
 
         <div className="mt-auto pt-6">
           <Button asChild variant="ghostOutline" size="pillSm">
-            <a href={course.ctaHref} onFocus={() => onFocus?.(index)}>
-              {course.ctaLabel}
-            </a>
+            <a href={course.ctaHref}>{course.ctaLabel}</a>
           </Button>
         </div>
       </div>

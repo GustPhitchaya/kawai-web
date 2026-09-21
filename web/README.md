@@ -123,36 +123,37 @@ position is page progress; its *vertical* position is which section
 you're in, stepping between lines as you read. Decorative, so
 `aria-hidden` and `pointer-events-none`.
 
-## Courses as a horizontal journey
+## Courses as a horizontal row
 
-`components/sections/courses-track.tsx` replaces five identical rows
-(1,998px of page) with one screen. The content is a progression by age
-and the old layout said nothing about it.
+`components/sections/courses-track.tsx` replaces five identical stacked
+rows (1,998px of page) with one screen.
 
-Two real modes, not one mode plus a hide:
+It is plain native horizontal scrolling — `snap-x snap-mandatory` on an
+`overflow-x-auto` flex row — with one behaviour for every visitor. No
+scroll hijacking: moving through the cards never takes over the page's
+vertical scroll. That also means the browser scrolls a focused card
+into view by itself, so keyboard access needs no code of its own.
 
-- **scrub** — desktop, fine pointer, motion allowed: vertical scroll
-  drives the track sideways, same sticky/`useScroll`/`useSpring` shape
-  as `hero-scrub.tsx`.
-- **snap** — everything else: a native `snap-x snap-mandatory`
-  carousel. On a phone that is the better control, not a consolation.
+Every card is presented identically. There is no "active" card, so
+nothing has to be derived from scroll position and there is no state to
+keep in sync — the only thing the scroll listener does is decide
+whether each arrow is still usable.
 
-`use-scrub-enabled.ts` is deliberately separate from
-`use-scene-enabled.ts`: the latter is the same media-query gate *plus*
-a WebGL probe, and hijacking scroll needs no GPU.
+Arrow buttons exist because a mouse has no easy way to scroll sideways.
+They are hidden under `coarse:` where swiping is the obvious gesture,
+and they disable at each end.
 
 Things that will break if touched carelessly:
 
-- The track is padded by half the leftover width so the first and last
-  cards can reach the centre. That padding is what makes the geometry
-  exactly linear — travel to centre card *i* is `i × (card + gap)` —
-  which is why `active` can be a plain `round(progress × 4)`.
-- Card width is measured with a `ResizeObserver`, not computed from
-  `vw`; Thai line breaking makes the real width unpredictable.
-- Each card's CTA has an `onFocus` that scrolls it into view. Without
-  it, Tab sends focus to a card somewhere off to the right.
-- The active card is distinguished by **scale and shadow, never
-  opacity**. Dimming the card takes its body text below AA contrast.
+- The scroller sets `padding-inline` **and** `scroll-padding-inline` to
+  the page gutter. `snap-start` aligns a card to the scrollport edge,
+  which would slam it flush against the window; the scroll-padding
+  moves the snap line inward so every card lands on the same left
+  margin the first one starts at. Change one without the other and the
+  row stops lining up with the rest of the page.
+- The arrow step is measured from the first two cards' `offsetLeft`
+  difference, not assumed: the gap is a `clamp()` and the card width
+  depends on Thai line breaking.
 
 ## The 3D harmony scene
 

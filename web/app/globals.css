@@ -148,11 +148,14 @@
   --color-placeholder: var(--kawai-placeholder);
   --color-placeholder-warm: var(--kawai-placeholder-warm);
 
-  /* ---- fonts (values injected by next/font in app/layout.tsx) ---- */
-  --font-display: var(--font-prompt), system-ui, sans-serif;
-  --font-sans: var(--font-noto-thai), system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), var(--font-noto-thai), monospace;
-  --font-heading: var(--font-prompt), system-ui, sans-serif;
+  /* ---- fonts (value injected by next/font in app/layout.tsx) ----
+     One family for every role — display, body and mono utilities all
+     resolve to the same Kanit instance, so the site reads as a single
+     typeface throughout rather than a pairing. */
+  --font-display: var(--font-kanit), system-ui, sans-serif;
+  --font-sans: var(--font-kanit), system-ui, sans-serif;
+  --font-mono: var(--font-kanit), system-ui, monospace;
+  --font-heading: var(--font-kanit), system-ui, sans-serif;
 
   /* ---- fluid type scale (clamps lifted verbatim) ---- */
   --text-body: clamp(16px, 1.05vw, 18px);

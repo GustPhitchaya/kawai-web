@@ -102,14 +102,14 @@ export default function StyleguidePage() {
         <H>Fonts</H>
         <div className="space-y-3">
           <p className="font-display text-h3 font-bold">
-            font-display · Prompt · โรงเรียนสอนดนตรีคาไว 1956
+            font-display · Kanit · โรงเรียนสอนดนตรีคาไว 1956
           </p>
           <p className="font-sans text-body">
-            font-sans · Noto Sans Thai · ไม่ใช่แค่การเรียนดนตรี
+            font-sans · Kanit · ไม่ใช่แค่การเรียนดนตรี
             แต่เป็นการเรียนรู้ผ่านเสียงดนตรี
           </p>
           <p className="font-mono text-kicker tracking-[0.22em] uppercase">
-            font-mono · IBM Plex Mono · THE KAWAI SYSTEM
+            font-mono · Kanit · THE KAWAI SYSTEM
           </p>
         </div>
       </section>

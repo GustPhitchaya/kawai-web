@@ -1,205 +1,119 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "motion/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "cn";
 import { CourseCard } from "./course-card";
-import { useScrubEnabled } from "@/hooks/use-scrub-enabled";
 import { courses } from "@/content";
 
-/** How much page scroll the track consumes, as a multiple of viewport height. */
-const TRACK_VH = 3.4;
-
 /**
- * The five courses as one horizontal journey instead of five identical
- * rows — the content is a progression by age, and the old layout said
- * nothing about that while eating 2,000px of page.
+ * The five courses as one horizontal row instead of five identical
+ * stacked rows, which ate 2,000px of page saying the same thing five
+ * times.
  *
- * Two real modes, not one mode plus a hide:
+ * Plain native horizontal scrolling, one behaviour for everyone: real
+ * momentum, real swipe, focused cards scrolled into view by the
+ * browser, and nothing taken over from the vertical scroll. Every card
+ * is presented identically — no "active" card, so there is no state to
+ * derive from scroll position and nothing to keep in sync.
  *
- *  - desktop, fine pointer, motion allowed: vertical scroll drives the
- *    track sideways, using the same sticky/useScroll/useSpring shape as
- *    `hero-scrub.tsx`.
- *  - everything else: a natively scrollable snap carousel. On a phone
- *    that is simply the better control — real momentum, real swipe, no
- *    JavaScript — so it is the fallback rather than a consolation.
+ * Arrow buttons exist because a mouse has no easy way to scroll
+ * sideways; they are hidden on touch, where swiping is the obvious
+ * gesture.
  */
 export function CoursesTrack() {
-  const scrub = useScrubEnabled();
-  return scrub ? <ScrubTrack /> : <SnapTrack />;
-}
-
-/* ------------------------------ shared ----------------------------- */
-
-function AgeRail({ active }: { active: number }) {
-  return (
-    <ol className="mt-8 flex items-center justify-center gap-3">
-      {courses.map((course, i) => (
-        <li key={course.slug} className="flex items-center gap-3">
-          <span
-            className={`duration-500 ease-kawai font-mono text-[0.72rem] tracking-[0.14em] transition-colors ${
-              i === active ? "text-brand-ink font-bold" : "text-ink-soft"
-            }`}
-          >
-            {course.ageLabel.replace("อายุ ", "")}
-          </span>
-          {i < courses.length - 1 ? (
-            <span className="bg-line-strong h-px w-6" />
-          ) : null}
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-/* ---------------------------- scrub mode --------------------------- */
-
-function ScrubTrack() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const [maxScroll, setMaxScroll] = useState(0);
-  const [pad, setPad] = useState(0);
-  const [active, setActive] = useState(0);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 180,
-    damping: 34,
-    restDelta: 0.0005,
-  });
-  const x = useTransform(progress, [0, 1], [0, -maxScroll]);
-
-  // Thai line breaking makes the real track width impossible to derive
-  // from vw units, so measure it and keep measuring on resize.
-  useEffect(() => {
-    const track = trackRef.current;
-    const viewport = viewportRef.current;
-    if (!track || !viewport) return;
-
-    // Pad the track by half the leftover width so the first and last
-    // cards can reach the centre too. With that padding the geometry
-    // works out exactly linear — travel to centre card i is
-    // i × (card + gap), and maxScroll is 4 × (card + gap) — which is
-    // why `active` below can be a plain round() of progress.
-    const measure = () => {
-      const card = track.firstElementChild as HTMLElement | null;
-      const gutter = card
-        ? Math.max(0, (viewport.clientWidth - card.offsetWidth) / 2)
-        : 0;
-      setPad(gutter);
-      setMaxScroll(
-        Math.max(0, track.scrollWidth + gutter * 2 - viewport.clientWidth),
-      );
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(track);
-    observer.observe(viewport);
-    return () => observer.disconnect();
-  }, []);
-
-  useMotionValueEvent(progress, "change", (value) => {
-    const next = Math.round(value * (courses.length - 1));
-    setActive((prev) => (prev === next ? prev : next));
-  });
-
-  // Tabbing into an off-screen card has to bring it on screen, or focus
-  // vanishes somewhere to the right of the viewport.
-  const focusCard = useCallback((index: number) => {
-    const section = sectionRef.current;
-    if (!section) return;
-    // Document position, not offsetTop — the section sits inside a
-    // positioned ancestor, so offsetTop would be measured from there.
-    const top = section.getBoundingClientRect().top + window.scrollY;
-    const span = section.offsetHeight - window.innerHeight;
-    const target = top + (index / Math.max(1, courses.length - 1)) * span;
-    window.scrollTo({ top: target, behavior: "smooth" });
-  }, []);
-
-  return (
-    <div ref={sectionRef} style={{ height: `${TRACK_VH * 100}vh` }}>
-      <div className="sticky top-0 flex h-svh flex-col justify-center overflow-hidden">
-        <div ref={viewportRef}>
-          <motion.div
-            ref={trackRef}
-            style={{ x, paddingLeft: pad, paddingRight: pad }}
-            className="flex w-max gap-gap-sm"
-          >
-            {courses.map((course, i) => (
-              <CourseCard
-                key={course.slug}
-                course={course}
-                index={i}
-                active={i === active}
-                onFocus={focusCard}
-              />
-            ))}
-          </motion.div>
-          <AgeRail active={active} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ---------------------------- snap mode ---------------------------- */
-
-function SnapTrack() {
   const scrollerRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
 
-  // Nearest card to the scroller's centre, so the rail tracks a swipe.
+  // The only thing scroll position drives is whether each arrow is
+  // still usable.
   useEffect(() => {
     const scroller = scrollerRef.current;
     if (!scroller) return;
 
     const update = () => {
-      const centre = scroller.scrollLeft + scroller.clientWidth / 2;
-      let best = 0;
-      let bestGap = Infinity;
-      Array.from(scroller.children).forEach((child, i) => {
-        const el = child as HTMLElement;
-        const gap = Math.abs(el.offsetLeft + el.offsetWidth / 2 - centre);
-        if (gap < bestGap) {
-          bestGap = gap;
-          best = i;
-        }
-      });
-      setActive((prev) => (prev === best ? prev : best));
+      const max = scroller.scrollWidth - scroller.clientWidth;
+      setAtStart(scroller.scrollLeft <= 1);
+      setAtEnd(scroller.scrollLeft >= max - 1);
     };
 
     update();
     scroller.addEventListener("scroll", update, { passive: true });
-    return () => scroller.removeEventListener("scroll", update);
+    const observer = new ResizeObserver(update);
+    observer.observe(scroller);
+    return () => {
+      scroller.removeEventListener("scroll", update);
+      observer.disconnect();
+    };
+  }, []);
+
+  const step = useCallback((direction: 1 | -1) => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    const [first, second] = Array.from(scroller.children) as HTMLElement[];
+    // One card plus one gap, measured rather than assumed — the gap is
+    // a clamp() and the card width depends on Thai line breaking.
+    const distance = second
+      ? second.offsetLeft - first.offsetLeft
+      : scroller.clientWidth;
+    scroller.scrollBy({ left: distance * direction, behavior: "smooth" });
   }, []);
 
   return (
-    <div>
+    <div className="relative">
       <div
         ref={scrollerRef}
-        style={{ paddingInline: "max(var(--spacing-gutter), calc((100% - min(460px, 72vw)) / 2))" }}
+        style={{
+          // Left edge sits flush at the page gutter, so the first card
+          // opens the row rather than floating in empty space. The
+          // right edge gets the same gutter, so the row simply ends.
+          paddingInline: "var(--spacing-gutter)",
+          // snap-start aligns a card to the scrollport edge, which
+          // would put it flush against the window rather than on the
+          // page gutter. scroll-padding moves the snap line inward to
+          // match, so every card lands on the same left margin the
+          // first one starts at.
+          scrollPaddingInline: "var(--spacing-gutter)",
+        }}
         className="scrollbar-none flex snap-x snap-mandatory gap-gap-sm overflow-x-auto pb-4"
       >
-        {courses.map((course, i) => (
-          <CourseCard
-            key={course.slug}
-            course={course}
-            index={i}
-            active={i === active}
-          />
+        {courses.map((course) => (
+          <CourseCard key={course.slug} course={course} />
         ))}
       </div>
-      <AgeRail active={active} />
+
+      <TrackArrow side="left" disabled={atStart} onClick={() => step(-1)} />
+      <TrackArrow side="right" disabled={atEnd} onClick={() => step(1)} />
     </div>
+  );
+}
+
+function TrackArrow({
+  side,
+  disabled,
+  onClick,
+}: {
+  side: "left" | "right";
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  const Icon = side === "left" ? ChevronLeft : ChevronRight;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={side === "left" ? "คอร์สก่อนหน้า" : "คอร์สถัดไป"}
+      className={cn(
+        "bg-panel border-line shadow-panel duration-300 ease-kawai absolute top-[38%] z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border transition-[opacity,transform]",
+        "hover:border-brand hover:text-brand disabled:pointer-events-none disabled:opacity-0",
+        // Touch users swipe; the arrows would only be in the way.
+        "coarse:hidden",
+        side === "left" ? "left-4" : "right-4",
+      )}
+    >
+      <Icon className="size-5" />
+    </button>
   );
 }

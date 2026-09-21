@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Prompt, Noto_Sans_Thai, IBM_Plex_Mono } from "next/font/google";
+import { Kanit } from "next/font/google";
 import { EnvLayer } from "@/components/layout/env-layer";
 import { MotionProvider } from "@/components/layout/motion-provider";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -11,24 +11,15 @@ import { IconSprite } from "@/components/primitives/icon-sprite";
 import { siteConfig } from "@/content";
 import "./globals.css";
 
-const prompt = Prompt({
+// One typeface for the whole site — display, body and mono roles all
+// point at this single Kanit instance (see globals.css). Weights cover
+// every role that used to be split across three families: 400 for
+// body copy, 500 for mono labels and medium emphasis, 600/700 for
+// headings.
+const kanit = Kanit({
   subsets: ["thai", "latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-prompt",
-  display: "swap",
-});
-
-const notoSansThai = Noto_Sans_Thai({
-  subsets: ["thai", "latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-noto-thai",
-  display: "swap",
-});
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["500"],
-  variable: "--font-plex-mono",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-kanit",
   display: "swap",
 });
 
@@ -62,7 +53,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="th"
-      className={`${prompt.variable} ${notoSansThai.variable} ${plexMono.variable}`}
+      className={kanit.variable}
     >
       <body>
         <SkipLink />
