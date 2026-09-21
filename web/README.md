@@ -139,9 +139,30 @@ nothing has to be derived from scroll position and there is no state to
 keep in sync — the only thing the scroll listener does is decide
 whether each arrow is still usable.
 
-Arrow buttons exist because a mouse has no easy way to scroll sideways.
-They are hidden under `coarse:` where swiping is the obvious gesture,
-and they disable at each end.
+Three ways to move through the row. Touch swipes it natively. A mouse
+can drag it directly (`hooks/use-drag-scroll.ts`) or step a card at a
+time with the arrow buttons, which are hidden under `coarse:` where
+swiping is the obvious gesture and disable at each end.
+
+Drag-to-scroll is mouse-only on purpose — touch and pen already pan
+with real momentum, and taking those over would replace a good native
+gesture with a worse hand-rolled one. Three details keep it from
+fighting the browser:
+
+- **Snapping is switched off for the duration of the drag.**
+  `snap-mandatory` re-snaps after *every* scroll change, so with it
+  left on each `scrollLeft` write is yanked straight back and the row
+  feels stuck. Restoring it on release is also what settles the row
+  onto a card.
+- **The click that follows a drag is swallowed** in the capture phase,
+  or letting go over a card follows its link. The flag that does this
+  is also cleared on the next `pointerdown`, so a drag whose click
+  never arrives can't leave it set and eat someone's real click.
+- **Native dragging of images and links is cancelled**, or the browser
+  starts a drag-and-drop instead of panning.
+
+Movement under 5px still counts as a click, so a small wobble while
+pressing a card's button doesn't swallow it.
 
 Things that will break if touched carelessly:
 
