@@ -8,7 +8,7 @@ export default function StrengthsSection() {
   return (
     <Section className="border-line border-t">
       <Reveal>
-        <RevealPart className="mb-head max-w-[min(820px,92%)]">
+        <RevealPart className="mb-head">
           <Kicker>{strengthsHead.kicker}</Kicker>
           <h2 className="text-h2">{strengthsHead.heading}</h2>
         </RevealPart>

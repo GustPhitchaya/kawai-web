@@ -27,7 +27,12 @@ export function StructuredData() {
         name: branch.name,
         address: {
           "@type": "PostalAddress",
-          addressLocality: branch.detail,
+          // Splitting `detail` finally lets these land in the right
+          // fields: a floor is part of the street address, a district
+          // or province is the locality. Both are omitted when the
+          // branch has no value rather than filled with the other.
+          ...(branch.floor ? { streetAddress: branch.floor } : {}),
+          ...(branch.area ? { addressLocality: branch.area } : {}),
           addressRegion: group.region,
           addressCountry: "TH",
         },

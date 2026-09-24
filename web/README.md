@@ -176,6 +176,54 @@ Things that will break if touched carelessly:
   difference, not assumed: the gap is a `clamp()` and the card width
   depends on Thai line breaking.
 
+## Branches as a region rail
+
+`components/sections/branches-section.tsx` used to render one grid per
+region, with the column count coming from a `columns` field in the
+data. That made the layout hostage to how many branches a region has:
+ภาคเหนือ's single branch stretched across the full 1,220px wrap and
+ภาคตะวันออก left half a row empty, so three provincial branches took
+roughly the vertical room of the nine in Bangkok.
+
+The region is now a narrow rail beside **one shared three-column
+grid**, so a region of one costs one cell. `columns` is gone from
+`BranchGroup` — nothing about the layout comes from the data any more.
+
+The rail collapses to an inline label at `max-dt`, not `max-tb`: at
+900px a fixed 190px rail plus three columns squeezes branch names onto
+two lines.
+
+**`detail` is split into `floor` and `area`.** They answer different
+questions — which level of the mall, and where in the country — and
+one string could only ever answer one of them. Both are optional,
+because the source data genuinely has gaps:
+
+| | branches |
+| --- | --- |
+| floor + area | 2 |
+| floor only | 7 |
+| area only | 3 |
+
+The card renders whichever it has and **never invents the other**.
+Filling those gaps is a content job, marked with a `@todo` in
+`content/branches.ts`. The split also fixes the JSON-LD, where the
+floor used to be emitted as `addressLocality`.
+
+Every card is a link to the branch on the map — which is all a pin was
+ever implying, so the twelve identical pins are gone. `mapHref()` falls
+back to a Maps search on the branch name; a real place URL goes in
+`mapUrl` on the branch.
+
+The floor chip is a **white** chip on the warm card, not the
+brand-tinted `Pill` `chip` variant: brand red on `brand-muted` over
+`canvas` measures 4.47:1, a hair under AA at that size.
+
+Height at 1440px: 1,317px → **1,161px**, with the branch grid itself
+down from ~773px to 617px (362 Bangkok, 127 each for ภาคเหนือ and
+ภาคตะวันออก — a region of one and a region of two now cost the same,
+because both are one row). The rest is the `Section` primitive's own
+`py-section` rhythm, shared with every other section.
+
 ## The 3D harmony scene
 
 The Harmony section's key row is rendered with three.js + React Three

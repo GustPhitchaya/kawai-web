@@ -27,7 +27,7 @@ export default function PhilosophySection() {
       <StaffDivider />
 
       <Reveal>
-        <RevealPart className="mb-head max-w-[min(820px,92%)]">
+        <RevealPart className="mb-head">
           <Kicker>{head.kicker}</Kicker>
           <h2 className="text-h2">{head.heading}</h2>
         </RevealPart>

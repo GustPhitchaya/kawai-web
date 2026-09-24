@@ -198,17 +198,27 @@ export interface Testimonial {
   role: string;
 }
 
+/**
+ * `floor` and `area` answer two different questions — "which level of
+ * the mall" and "where in the country" — so they are separate fields
+ * rather than one `detail` string. Both are optional because the
+ * source data is genuinely incomplete; the card renders whichever it
+ * has and never invents the other.
+ *
+ * `mapUrl` overrides the name-derived Maps search link for branches
+ * that have a real place URL.
+ */
 export interface Branch {
   slug: string;
   name: string;
-  detail: string;
+  floor?: string;
+  area?: string;
+  mapUrl?: string;
 }
 
 export interface BranchGroup {
   id: string;
   region: string;
-  /** Column count on wide screens (.blist / .blist.two / .blist.one). */
-  columns: 1 | 2 | 3;
   branches: Branch[];
 }
 

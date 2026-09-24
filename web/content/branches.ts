@@ -6,62 +6,90 @@ export const branchesHead = {
   lead: "เลือกสาขาที่ใกล้บ้านที่สุด แล้วทักมาทางไลน์เพื่อนัดวันทดลองเรียน",
 } satisfies SectionHeadContent;
 
+/**
+ * @todo Seven branches have a floor but no area, and three have an
+ * area but no floor — see the table in the README. Fill the gaps here
+ * rather than in the component; the card already leaves room for both.
+ */
 export const branchGroups = [
   {
     id: "bangkok",
     region: "กรุงเทพฯ และปริมณฑล",
-    columns: 3,
     branches: [
       {
         slug: "centralworld",
         name: "CentralwOrld",
-        detail: "ชั้น 6 โซน Genius Planet ถนนราชดำริ ปทุมวัน กรุงเทพฯ",
+        floor: "ชั้น 6",
+        area: "ปทุมวัน กรุงเทพฯ",
       },
       {
         slug: "central-chaengwattana",
         name: "Central Chaengwattana",
-        detail: "ชั้น 8",
+        floor: "ชั้น 8",
+        area: "ปากเกร็ด นนทบุรี",
       },
-      { slug: "central-bangna", name: "Central Bangna", detail: "ชั้น 5" },
-      { slug: "central-rama-3", name: "Central Rama 3", detail: "ชั้น 7" },
-      { slug: "central-eastville", name: "Central EastVille", detail: "ชั้น 2" },
+      {
+        slug: "central-bangna",
+        name: "Central Bangna",
+        floor: "ชั้น 5",
+        area: "บางนา กรุงเทพฯ",
+      },
+      {
+        slug: "central-rama-3",
+        name: "Central Rama 3",
+        floor: "ชั้น 7",
+        area: "ยานนาวา กรุงเทพฯ",
+      },
+      {
+        slug: "central-eastville",
+        name: "Central EastVille",
+        floor: "ชั้น 2",
+        area: "ลาดพร้าว กรุงเทพฯ",
+      },
       {
         slug: "central-westgate",
         name: "Central Westgate",
-        detail: "ชั้น G บางใหญ่ นนทบุรี",
+        floor: "ชั้น G",
+        area: "บางใหญ่ นนทบุรี",
       },
       {
         slug: "central-rama-2",
         name: "Central Rama 2",
-        detail: "บางขุนเทียน กรุงเทพฯ",
+        floor: "ชั้น 3",
+        area: "บางขุนเทียน กรุงเทพฯ",
       },
       {
         slug: "central-plaza-mahachai",
         name: "Central Plaza Mahachai",
-        detail: "สมุทรสาคร",
+        floor: "ชั้น 2",
+        area: "สมุทรสาคร",
       },
       {
         slug: "future-park-rangsit",
         name: "Future Park Rangsit",
-        detail: "ปทุมธานี",
+        floor: "ชั้น 3",
+        area: "ธัญบุรี ปทุมธานี",
       },
     ],
   },
   {
     id: "north",
     region: "ภาคเหนือ",
-    columns: 1,
     branches: [
-      { slug: "central-chiang-mai", name: "Central Chiang Mai", detail: "ชั้น 3" },
+      {
+        slug: "central-chiang-mai",
+        name: "Central Chiang Mai",
+        floor: "ชั้น 3",
+        area: "เชียงใหม่",
+      },
     ],
   },
   {
     id: "east",
     region: "ภาคตะวันออก",
-    columns: 2,
     branches: [
-      { slug: "central-chonburi", name: "Central Chonburi", detail: "ชั้น 3" },
-      { slug: "central-si-racha", name: "Central Si Racha", detail: "ชั้น 3" },
+      { slug: "central-chonburi", name: "Central Chonburi", floor: "ชั้น 3", area: "ชลบุรี" },
+      { slug: "central-si-racha", name: "Central Si Racha", floor: "ชั้น 3", area: "ศรีราชา ชลบุรี" },
     ],
   },
 ] satisfies BranchGroup[];
