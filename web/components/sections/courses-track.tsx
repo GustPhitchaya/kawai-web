@@ -22,8 +22,13 @@ import { courses } from "@/content";
  * drag the row directly (see `use-drag-scroll`), or step a card at a
  * time with the arrow buttons. Both are hidden or irrelevant on touch,
  * where swiping is the obvious gesture.
+ *
+ * The arrows sit beside the heading, not over the photos, so they never
+ * cover a card. That puts them in this client component's markup, so
+ * the heading comes in as `head`: it stays server-rendered, and only
+ * its position is decided here.
  */
-export function CoursesTrack() {
+export function CoursesTrack({ head }: { head: React.ReactNode }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -66,7 +71,18 @@ export function CoursesTrack() {
   }, []);
 
   return (
-    <div className="relative">
+    <>
+      <div className="px-gutter">
+        <div className="mb-head mx-auto flex max-w-wrap items-end justify-between gap-8">
+          {/* grow, or the arrows squeeze the heading onto two lines */}
+          <div className="min-w-0 grow">{head}</div>
+          <div className="flex shrink-0 gap-2.5 pb-1 coarse:hidden max-tb:hidden">
+            <TrackArrow side="left" disabled={atStart} onClick={() => step(-1)} />
+            <TrackArrow side="right" disabled={atEnd} onClick={() => step(1)} />
+          </div>
+        </div>
+      </div>
+
       <div
         ref={scrollerRef}
         style={{
@@ -87,10 +103,7 @@ export function CoursesTrack() {
           <CourseCard key={course.slug} course={course} />
         ))}
       </div>
-
-      <TrackArrow side="left" disabled={atStart} onClick={() => step(-1)} />
-      <TrackArrow side="right" disabled={atEnd} onClick={() => step(1)} />
-    </div>
+    </>
   );
 }
 
@@ -111,11 +124,10 @@ function TrackArrow({
       disabled={disabled}
       aria-label={side === "left" ? "คอร์สก่อนหน้า" : "คอร์สถัดไป"}
       className={cn(
-        "bg-panel border-line shadow-panel duration-300 ease-kawai absolute top-[38%] z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border transition-[opacity,transform]",
-        "hover:border-brand hover:text-brand disabled:pointer-events-none disabled:opacity-0",
-        // Touch users swipe; the arrows would only be in the way.
-        "coarse:hidden",
-        side === "left" ? "left-4" : "right-4",
+        "bg-panel border-line-strong duration-300 ease-kawai grid size-12 place-items-center rounded-full border transition-[color,border-color,opacity]",
+        // Faded rather than hidden at either end, so the pair stays put
+        // and still says which way the row goes.
+        "hover:border-brand hover:text-brand disabled:pointer-events-none disabled:opacity-35",
       )}
     >
       <Icon className="size-5" />

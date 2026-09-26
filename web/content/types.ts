@@ -133,13 +133,23 @@ export interface Strength {
   focus?: string;
 }
 
+/**
+ * One line of a course's details. Each kind has its own icon and the
+ * lines keep one order across courses (format, teachers, lesson
+ * length, duration), so the cards can be compared line by line.
+ */
+export interface CourseSpec {
+  kind: "format" | "teachers" | "length" | "duration" | "repertoire";
+  text: string;
+}
+
 export interface Course {
   slug: string;
   ageLabel: string;
   title: string;
   titleTh: string;
   description: string;
-  facts: string[];
+  specs: CourseSpec[];
   image: ImageAsset;
   ctaHref: string;
   ctaLabel: string;

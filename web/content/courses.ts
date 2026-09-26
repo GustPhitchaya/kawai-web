@@ -7,7 +7,7 @@ export const coursesHead = {
   lead: "ทุกคอร์สเริ่มจากอายุและพัฒนาการของผู้เรียน ไม่ใช่จากบทเพลงที่ต้องเล่นให้จบ",
 } satisfies SectionHeadContent;
 
-const CTA_LABEL = "สอบถาม";
+const CTA_LABEL = "สอบถามคอร์สนี้";
 
 export const courses = [
   {
@@ -17,7 +17,13 @@ export const courses = [
     titleTh: "คูจังแลนด์",
     description:
       "การฟังดนตรีและการตอบสนองต่อดนตรีช่วยพัฒนาความไวต่อเสียง เป็นรากฐานของการเรียนรู้ภาษาและจินตนาการ",
-    facts: ["กลุ่ม 2 ถึง 4 คน", "ครู 2 ท่าน", "40 นาทีต่อคาบ", "6 เดือนถึง 1 ปี"],
+    specs: [
+      { kind: "format", text: "กลุ่ม 2 ถึง 4 คน" },
+      { kind: "teachers", text: "ครู 2 ท่าน" },
+      { kind: "length", text: "40 นาทีต่อคาบ" },
+      // @todo confirm: course length, or the children's age range?
+      { kind: "duration", text: "6 เดือนถึง 1 ปี" },
+    ],
     image: {
       src: "/images/course-1.jpg",
       alt: "ห้องเรียนกลุ่มเด็กเล็กกับครูและผู้ปกครอง",
@@ -34,7 +40,13 @@ export const courses = [
     titleTh: "คูลูคูลูคลับ",
     description:
       "เน้นกิจกรรมยูริธมิกส์ ให้เด็กสัมผัสดนตรีด้วยร่างกายทั้งตัว ผ่านอุปกรณ์การสอนที่หลากหลาย",
-    facts: ["กลุ่ม 2 ถึง 4 คน", "ครู 2 ท่าน", "50 นาทีต่อคาบ", "6 เดือนถึง 1 ปี"],
+    specs: [
+      { kind: "format", text: "กลุ่ม 2 ถึง 4 คน" },
+      { kind: "teachers", text: "ครู 2 ท่าน" },
+      { kind: "length", text: "50 นาทีต่อคาบ" },
+      // @todo confirm: course length, or the children's age range?
+      { kind: "duration", text: "6 เดือนถึง 1 ปี" },
+    ],
     image: {
       src: "/images/course-2.jpg",
       alt: "ห้องแกรนด์เปียโน เด็กเล็กและผู้ปกครองนั่งล้อมวงกับครู",
@@ -51,7 +63,11 @@ export const courses = [
     titleTh: "เฮลโหลมิวสิก",
     description:
       "นักเรียนได้คีย์บอร์ดเป็นของตัวเอง เรียนเล่นรวมวง ฝึกทักษะเอนเซมเบิล และอ่านโน้ตในรูปแบบที่สนุก",
-    facts: ["เดี่ยวและกลุ่ม", "ครู 1 ถึง 2 ท่าน", "เดี่ยว 30 นาที", "กลุ่ม 50 นาที"],
+    specs: [
+      { kind: "format", text: "เดี่ยวและกลุ่ม" },
+      { kind: "teachers", text: "ครู 1 ถึง 2 ท่าน" },
+      { kind: "length", text: "เดี่ยว 30 นาที · กลุ่ม 50 นาที" },
+    ],
     image: {
       src: "/images/course-3.jpg",
       alt: "เด็กหญิงเล่นเครื่องเคาะจังหวะกับครู",
@@ -68,7 +84,11 @@ export const courses = [
     titleTh: "ซาวด์ทรี",
     description:
       "วิธีสอนที่พัฒนาจากประสบการณ์สอนกลุ่มกว่า 60 ปีของคาไว ผสานกับงานวิจัยด้านการสอนเปียโน",
-    facts: ["เรียนเดี่ยว", "ครู 1 ท่าน", "30 นาทีต่อคาบ"],
+    specs: [
+      { kind: "format", text: "เรียนเดี่ยว" },
+      { kind: "teachers", text: "ครู 1 ท่าน" },
+      { kind: "length", text: "30 นาทีต่อคาบ" },
+    ],
     image: {
       src: "/images/course-4.jpg",
       alt: "เด็กชายเรียนเปียโนเดี่ยวกับครู",
@@ -85,7 +105,10 @@ export const courses = [
     titleTh: "ซาวด์แฟนส์",
     description:
       "สำหรับผู้เริ่มต้น เรียนเพลงที่ชอบตามระดับและเป้าหมายของตัวเอง ผ่านการร้อง เล่น ฟัง และจดจำ",
-    facts: ["เรียนเดี่ยว", "เลือกเพลงเองได้"],
+    specs: [
+      { kind: "format", text: "เรียนเดี่ยว" },
+      { kind: "repertoire", text: "เลือกเพลงเองได้" },
+    ],
     image: {
       src: "/images/course-5.jpg",
       alt: "ผู้ใหญ่เรียนเปียโนกับครูที่แกรนด์เปียโน KAWAI",

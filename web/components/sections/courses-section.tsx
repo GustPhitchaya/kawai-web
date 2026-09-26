@@ -1,5 +1,4 @@
 import { CtaButton } from "@/components/primitives/cta-button";
-import { Pill } from "@/components/primitives/pill";
 import { Reveal, RevealPart } from "@/components/primitives/reveal";
 import { SectionHead } from "@/components/primitives/section-head";
 import { StaffDivider } from "@/components/primitives/staff-divider";
@@ -20,32 +19,42 @@ export default function CoursesSection() {
       <div className="px-gutter">
         <div className="mx-auto max-w-wrap">
           <StaffDivider />
-          <Reveal>
-            <RevealPart>
-              <SectionHead content={coursesHead} />
-            </RevealPart>
-          </Reveal>
         </div>
       </div>
 
-      <CoursesTrack />
+      <CoursesTrack
+        head={
+          <Reveal>
+            <RevealPart>
+              <SectionHead content={coursesHead} className="mb-0" />
+            </RevealPart>
+          </Reveal>
+        }
+      />
 
       <div className="px-gutter mt-10">
         <div className="mx-auto max-w-wrap">
           <Reveal>
-            <RevealPart className="border-line-strong rounded-card p-inst grid grid-cols-[1fr_auto] items-center gap-5.5 border border-dashed max-dt:grid-cols-1">
+            {/* A solid warm panel rather than the old dashed outline, which
+                read as a placeholder. The chips are white with brand-ink
+                text: the `chip` Pill's brand-muted fill measures under AA
+                on this ground. */}
+            <RevealPart className="bg-canvas rounded-card p-inst grid grid-cols-[1fr_auto] items-center gap-x-8 gap-y-5 max-dt:grid-cols-1">
               <div>
-                <h3 className="mb-2 text-[1.15rem]">{instruments.title}</h3>
+                <h3 className="mb-1 text-[1.2rem] font-bold">{instruments.title}</h3>
                 <p className="text-ink-soft max-w-[62ch] text-[0.96rem]">
                   {instruments.body}
                 </p>
-                <div className="mt-3.5 flex flex-wrap gap-2">
+                <ul className="mt-3.5 flex flex-wrap gap-2">
                   {instruments.chips.map((chip) => (
-                    <Pill key={chip} variant="chip">
+                    <li
+                      key={chip}
+                      className="bg-panel border-brand/25 text-brand-ink rounded-pill border px-3.25 py-1.25 text-[0.85rem] font-medium"
+                    >
                       {chip}
-                    </Pill>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
               <CtaButton cta={instruments.cta} />
             </RevealPart>

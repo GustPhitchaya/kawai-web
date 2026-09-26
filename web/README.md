@@ -166,8 +166,23 @@ whether each arrow is still usable.
 
 Three ways to move through the row. Touch swipes it natively. A mouse
 can drag it directly (`hooks/use-drag-scroll.ts`) or step a card at a
-time with the arrow buttons, which are hidden under `coarse:` where
-swiping is the obvious gesture and disable at each end.
+time with the arrow buttons. The arrows sit beside the heading, not
+over the photos, and fade (rather than vanish) at each end so the pair
+stays put. They are hidden under `coarse:` and below `tb`, where
+swiping is the obvious gesture. Because the arrows live in the client
+track, the heading is passed in as its `head` prop and stays
+server-rendered.
+
+Each card lists its details as rows (`Course.specs`), one icon per
+`kind`, always in the same order: format, teachers, lesson length,
+duration. These replaced a heap of outline pills that wrapped
+differently on every card, so courses couldn't be compared. The rows
+sit at the bottom of the card body, so they line up however long each
+description runs.
+
+`courses.ts` marks the two "6 เดือนถึง 1 ปี" lines `@todo confirm`.
+It's unclear whether they mean course length or the children's age
+range, and the second reading would contradict the age badge.
 
 Drag-to-scroll is mouse-only on purpose — touch and pen already pan
 with real momentum, and taking those over would replace a good native
