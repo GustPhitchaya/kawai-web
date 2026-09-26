@@ -232,6 +232,24 @@ cards floating at random.
 `exam-levels.ts` is still `@mock`. Fill `adds` from the real syllabus
 along with the rest.
 
+## Events as a programme
+
+`components/sections/events-section.tsx` lists the events like a
+concert programme: one line each under a heavy top rule, with when,
+what, and a small photo. The date leads because it is what a parent
+plans around, and it used to be the smallest text in the row. The old
+layout gave each event a full-size photo row: 1,656px at 1440 and
+2,373px at 900, where every photo went full width. It is now 1,028px
+and 803px.
+
+- **`when` is `{ main, sub }`**, so the part people scan for
+  ("ธันวาคม") is set large and its qualifier ("ทุกปี") small beneath
+  it.
+- **Below `tb` the date becomes one line above the title**, and the
+  photo moves to the right edge, spanning both rows.
+- `events.ts` is still `@mock`. The real schedule goes in the same
+  `main`/`sub` shape.
+
 ## Branches as a region rail
 
 `components/sections/branches-section.tsx` used to render one grid per

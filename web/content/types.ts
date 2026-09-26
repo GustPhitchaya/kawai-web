@@ -202,9 +202,13 @@ export interface ExamContent {
   facts: ExamFact[];
 }
 
+/**
+ * `when` is split so the listing can set the part people scan for
+ * ("ธันวาคม") large and its qualifier ("ทุกปี") small beneath it.
+ */
 export interface EventItem {
   slug: string;
-  when: string;
+  when: { main: string; sub: string };
   title: string;
   body: string;
   image: ImageAsset;

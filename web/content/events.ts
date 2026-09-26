@@ -11,7 +11,7 @@ export const eventsHead = {
 export const events = [
   {
     slug: "music-recital",
-    when: "ธันวาคม ทุกปี",
+    when: { main: "ธันวาคม", sub: "ทุกปี" },
     title: "KAWAI Music Recital",
     body: "เวทีให้นักเรียนทุกคนได้ขึ้นแสดงเดี่ยวหรือร่วมวงต่อหน้าครอบครัวและเพื่อน เพื่อสร้างความมั่นใจและภาคภูมิใจในตัวเอง",
     image: {
@@ -23,7 +23,7 @@ export const events = [
   },
   {
     slug: "parent-workshop",
-    when: "จัดเป็นระยะตลอดปี",
+    when: { main: "ตลอดปี", sub: "จัดเป็นระยะ" },
     title: "Workshop สำหรับผู้ปกครองและเด็ก",
     body: "กิจกรรมสัมผัสดนตรีร่วมกันระหว่างผู้ปกครองและเด็กเล็ก ก่อนตัดสินใจสมัครเรียนจริง",
     image: {
@@ -35,7 +35,7 @@ export const events = [
   },
   {
     slug: "music-camp",
-    when: "เมษายน และ ตุลาคม",
+    when: { main: "เม.ย. · ต.ค.", sub: "ช่วงปิดเทอม" },
     title: "Music Camp ปิดเทอม",
     body: "ค่ายดนตรีช่วงปิดเทอม รวมกิจกรรมร้อง เล่น เต้น และเวิร์กช็อปเครื่องดนตรีหลากหลายชนิด",
     image: {
