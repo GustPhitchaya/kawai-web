@@ -250,6 +250,29 @@ and 803px.
 - `events.ts` is still `@mock`. The real schedule goes in the same
   `main`/`sub` shape.
 
+## Parent reviews
+
+`components/sections/reviews-section.tsx` makes the review the card's
+main text, dark and at reading size, instead of a caption under a faint
+quote mark. Under it: who said it, their child's course, and the age
+that course is for, so a parent can find the reviews for their own
+child's age.
+
+- **A review names its course by `slug`** (`course: "hello-music"`).
+  The course name and age on the card come from `courses.ts`, so the
+  two can't drift apart. A slug that isn't in `courses.ts` throws when
+  the card renders, which for this static page is at build time.
+- **`initial`, the letter in the avatar circle, is set by hand.** A
+  Thai name can open with a leading vowel (เ แ โ ใ ไ), so taking the
+  first character isn't safe. There are no photos on purpose: a stand-in
+  face makes a review look fake. Swap in a real photo only with the
+  parent's consent.
+- **The section uses the new `warm` tone on `Section`**, so it breaks
+  from the white events and branches sections on either side of it.
+- **The quote mark is an SVG.** At bold weight Kanit's “ is two
+  slanted bars that read as "//".
+- `testimonials.ts` is still `@mock`.
+
 ## Branches as a region rail
 
 `components/sections/branches-section.tsx` used to render one grid per

@@ -1,10 +1,11 @@
 import { cn } from "cn";
 
-export type SectionTone = "canvas" | "panel" | "deep";
+export type SectionTone = "canvas" | "panel" | "warm" | "deep";
 
 const toneClass: Record<SectionTone, string> = {
   canvas: "",
   panel: "bg-panel",
+  warm: "bg-warm",
   deep: "bg-deep text-on-deep overflow-hidden",
 };
 

@@ -214,11 +214,19 @@ export interface EventItem {
   image: ImageAsset;
 }
 
+/**
+ * `course` is a course `slug`, not a label. The card shows that
+ * course's name and age from `courses.ts`, so a parent can find the
+ * reviews for their own child's age, and the two can't drift apart.
+ * `initial` is the letter in the avatar circle. It is set by hand
+ * because a Thai name can open with a leading vowel (เ แ โ ใ ไ).
+ */
 export interface Testimonial {
   id: string;
   quote: string;
   author: string;
-  role: string;
+  initial: string;
+  course: string;
 }
 
 /**
