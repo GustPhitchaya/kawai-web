@@ -240,10 +240,23 @@ export interface BranchGroup {
 export interface ContactContent {
   id: string;
   head: SectionHeadContent;
-  lineBlock: { tag: string; heading: string; body: string; cta: Cta };
+  /**
+   * `steps` is what happens after tapping the button, in order — the
+   * banner draws them as a numbered sequence. `handle` is shown under
+   * the button for anyone adding the account by searching in LINE.
+   */
+  lineBlock: {
+    tag: string;
+    heading: string;
+    steps: string[];
+    handle: string;
+    cta: Cta;
+  };
+  /** Heading for the tile row; visually hidden, read by screen readers. */
   waysTitle: string;
   ways: ContactWay[];
   waysNote: string;
+  branchesLink: NavLink;
 }
 
 /**

@@ -255,6 +255,24 @@ down from ~773px to 617px (362 Bangkok, 127 each for ภาคเหนือ an
 because both are one row). The rest is the `Section` primitive's own
 `py-section` rhythm, shared with every other section.
 
+## Contact: LINE banner, then tiles
+
+`components/sections/contact-section.tsx` gives LINE the full width,
+because it is the channel that books a trial class. What happens after
+tapping the button is drawn as three numbered steps (`lineBlock.steps`),
+and the account handle sits under the button for anyone who searches
+for it in LINE instead. The other four ways sit underneath as equal
+tiles, each one a whole tap target.
+
+This replaced two columns that started and ended at different heights,
+with the LINE button as the smallest thing in a mostly empty card.
+
+- The tiles are four across only from `nav` (1141px) up. Below that the
+  email address no longer fits a quarter of the row. Two across down to
+  `ph`, then one per row with the icon beside the text, so four tiles
+  don't stack as four tall cards.
+- The closing line links to `#branches`, which it used to only mention.
+
 ## The 3D harmony scene
 
 The Harmony section's key row is rendered with three.js + React Three

@@ -11,7 +11,8 @@ export const contact = {
   lineBlock: {
     tag: "ช่องทางที่เร็วที่สุด",
     heading: "ทักไลน์เพื่อจองคลาสเรียนทดลอง",
-    body: "บอกอายุของลูกและสาขาที่สะดวก เราจะจัดวันและส่งรายละเอียดค่าเรียนให้ครบ",
+    steps: ["แอดไลน์", "บอกอายุลูกและสาขา", "รับวันเรียนทดลอง"],
+    handle: siteConfig.line.handle,
     cta: {
       label: lineCta.contact,
       href: siteConfig.line.url,
@@ -21,6 +22,6 @@ export const contact = {
   },
   waysTitle: "ช่องทางอื่น",
   ways: contactWays,
-  waysNote:
-    "หรือเดินเข้ามาที่สาขาไหนก็ได้ใน 12 สาขา เจ้าหน้าที่พาชมห้องเรียนและแนะนำคอร์สที่เหมาะกับลูกให้",
+  waysNote: `หรือเดินเข้ามาที่สาขาไหนก็ได้ใน ${siteConfig.branchCount} สาขา`,
+  branchesLink: { href: "#branches", label: "ดูสาขา" },
 } satisfies ContactContent;
