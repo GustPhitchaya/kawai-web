@@ -176,6 +176,37 @@ Things that will break if touched carelessly:
   difference, not assumed: the gap is a `clamp()` and the card width
   depends on Thai line breaking.
 
+## Exam levels on a staff
+
+`components/sections/exam-section.tsx` draws the levels the way music
+already measures height: as pitch on a five-line staff. Level 01 sits
+on the bottom line, each level after it climbs, and a dashed drop runs
+from each note down to its card.
+
+It replaces a stagger that pushed each card down by a fixed offset.
+With nothing on screen saying what the height meant, it read as three
+cards floating at random.
+
+- **The band is wide-screen only** (`max-dt:hidden`). Below `dt` the
+  cards stack and the band would have nothing to line up with, so each
+  card carries a small staff of its own instead: every level as a ring,
+  its own filled in.
+- **Band x positions are percentages of the column centres**, so the
+  band stretches with the grid instead of being measured. They ignore
+  the grid gap, which puts the outer notes a few px off centre, too
+  little to see. y stays in px so the notes stay round.
+- **Pitch is computed from the level count** (`pitch()`), so a fourth
+  level spreads the notes rather than breaking the layout.
+- **`adds` lists what a level introduces**, not everything it covers.
+  The chips were drawn from the existing level copy, not invented, and
+  `buildsOn` says the levels stack. The levels are an `<ol>`, so the
+  order is in the markup too.
+- **`note` became `facts`**: schedule and certificate are what parents
+  ask first, so they get their own strip instead of a footnote.
+
+`exam-levels.ts` is still `@mock`. Fill `adds` from the real syllabus
+along with the rest.
+
 ## Branches as a region rail
 
 `components/sections/branches-section.tsx` used to render one grid per

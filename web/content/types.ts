@@ -170,8 +170,22 @@ export interface HarmonyContent {
   payoff: { prefix: string; emphasis: string; body: string };
 }
 
+/**
+ * `adds` is what a level introduces, not everything it covers — the
+ * levels build on each other, and `buildsOn` says so in words. Drawn
+ * together, the chips are what make the three levels read as a
+ * sequence rather than three unrelated cards.
+ */
 export interface ExamLevel {
   level: string;
+  title: string;
+  body: string;
+  adds: string[];
+  buildsOn: string;
+}
+
+export interface ExamFact {
+  icon: "calendar" | "award";
   title: string;
   body: string;
 }
@@ -180,7 +194,8 @@ export interface ExamContent {
   id: string;
   head: SectionHeadContent;
   levels: ExamLevel[];
-  note: string;
+  addsLabel: string;
+  facts: ExamFact[];
 }
 
 export interface EventItem {

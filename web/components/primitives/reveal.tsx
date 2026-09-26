@@ -80,7 +80,7 @@ export function RevealPart({
 }: {
   children: React.ReactNode;
   className?: string;
-  as?: "div" | "article" | "figure" | "section";
+  as?: "div" | "article" | "figure" | "section" | "li";
 }) {
   const Tag = motion[as];
   return (
