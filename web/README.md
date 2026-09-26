@@ -123,6 +123,31 @@ position is page progress; its *vertical* position is which section
 you're in, stepping between lines as you read. Decorative, so
 `aria-hidden` and `pointer-events-none`.
 
+## Strengths as a mosaic
+
+`components/sections/strengths-section.tsx` shows the three strengths
+as one tall tile (01, KAWAI's "Personality" idea) beside two stacked
+side tiles (02 and 03, which make it possible). It replaces three
+alternating photo/text rows. Each strength is only a sentence or two,
+so those rows were mostly empty text column: 1,836px at 1440, now
+1,064px.
+
+It is also the one layout on the page where the pieces are not all the
+same size. Exam, branches and contact are all rows of equal cards.
+
+- **The mosaic only runs from `nav` (1141px) up.** It needs a fixed
+  height to split into two rows, and below `nav` the side tiles' text
+  column gets too narrow for strength 02's body. Below that everything
+  stacks: the lead tile full width, the other two with the photo beside
+  the text.
+- **The lead photo is 2:1 when stacked** (16:10 on phones). At 16:10
+  across a 900px tablet it made the section taller there than on
+  desktop.
+- **`focus` on a strength sets the photo's `object-position`.** The
+  tiles crop to shapes the photos weren't shot for, so faces are pinned
+  rather than left to the centre. It replaced `flip`, which only
+  existed for the alternating rows.
+
 ## Courses as a horizontal row
 
 `components/sections/courses-track.tsx` replaces five identical stacked

@@ -43,7 +43,7 @@ export const strengths = [
       width: 1400,
       height: 764,
     },
-    flip: false,
+    focus: "50% 30%",
   },
   {
     num: "02",
@@ -55,7 +55,6 @@ export const strengths = [
       width: 1400,
       height: 764,
     },
-    flip: true,
   },
   {
     num: "03",
@@ -67,6 +66,6 @@ export const strengths = [
       width: 1400,
       height: 764,
     },
-    flip: false,
+    focus: "40% 50%",
   },
 ] satisfies Strength[];

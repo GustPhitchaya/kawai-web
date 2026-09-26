@@ -125,8 +125,12 @@ export interface Strength {
   title: string;
   body: string;
   image: ImageAsset;
-  /** Puts the photo second on wide screens (.srow.flip). */
-  flip: boolean;
+  /**
+   * CSS `object-position` for the photo. The tiles crop to shapes the
+   * photos weren't shot for, so the subject is pinned rather than left
+   * to the centre.
+   */
+  focus?: string;
 }
 
 export interface Course {
